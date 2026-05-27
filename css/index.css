@@ -23,7 +23,7 @@ body {
 .cover-bg {
   position: absolute;
   inset: 0;
-  background: url('../images/indexImage.png') center center / cover no-repeat;
+  background: url('../images/indexImage.webp') center center / cover no-repeat;
   z-index: 0;
 }
 

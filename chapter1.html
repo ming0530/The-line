@@ -72,7 +72,7 @@
 <div class="angel-screen hidden" id="angel-screen" onclick="goKnowledgeCard()">
   <div class="angel-title">法官小天使</div>
   <div class="real-photo">
-  <img src="images/part1/Lab.jpg">
+  <img src="images/part1/Lab.webp">
 </div>
   <div class="angel-text" id="angel-text"></div>
 
@@ -127,13 +127,13 @@ const lines = [
   {
     type: 'narrate',
     text: '某個週三下午，你在實驗室角落改報告。',
-    bg: 'images/part1/Revising.png'
+    bg: 'images/part1/Revising.webp'
   },
 
   {
     type: 'narrate',
     text: '阿哲跟小瑀在另一頭討論實驗數據。\n你一邊看著自己的螢幕，一邊聽見他們的聲音。',
-    bg: 'images/part1/Discussing.png'
+    bg: 'images/part1/Discussing.webp'
   },
 
   {
@@ -157,7 +157,7 @@ const lines = [
   {
     type: 'narrate',
     text: '阿哲走到小瑀身後，俯身靠近她的螢幕。\n他的手從旁邊伸過來，放在她的手上，像是要「一起」操作滑鼠。',
-    bg: 'images/part1/Teaching.png'
+    bg: 'images/part1/Teaching.webp'
   },
   {
     type: 'observation'
@@ -165,7 +165,7 @@ const lines = [
   {
     type: 'narrate',
     text: '小瑀的身體往椅背縮了一下。\n實驗室安靜了兩秒。',
-    bg: 'images/part1/Unconfortable.png'
+    bg: 'images/part1/Unconfortable.webp'
   },
 
   {
@@ -183,18 +183,18 @@ const lines = [
   {
     type: 'narrate',
     text: '阿哲往後退了一步。\n他看起來有點尷尬，但沒有再說什麼。',
-    bg: 'images/part1/Awkward.png'
+    bg: 'images/part1/Awkward.webp'
   },
 
   {
     type: 'narrate',
     text: '你注意到，小瑀等阿哲離開後，在座位上坐了很久沒動。',
-    bg: 'images/part1/Observe.png'
+    bg: 'images/part1/Observe.webp'
   },
   {
     type: 'narrate',
     text: '你看到了這一幕。散會後，小瑀一個人收拾東西準備離開。 你會怎麼做？',
-    bg: 'images/part1/Leaving.png'
+    bg: 'images/part1/Leaving.webp'
   }
 ];
 
@@ -204,7 +204,7 @@ const choiceResults = {
     type: 'dialog',
     speaker: '小瑀',
     text: '還好啦，我說出來了。',
-    bg: 'images/part1/Annoying.png'
+    bg: 'images/part1/Annoying.webp'
     },
 
     {
@@ -225,7 +225,7 @@ const choiceResults = {
     {
       type: 'narrate',
       text: '她點了點頭。\n你的陪伴讓她知道，她不是一個人在面對這件事。',
-      bg: 'images/part1/Smiling.png'
+      bg: 'images/part1/Smiling.webp'
     }
   ],
 
@@ -233,7 +233,7 @@ const choiceResults = {
     {
       type: 'narrate',
       text: '小瑀自己回去了。',
-      bg: 'images/part1/GoingHome.png'
+      bg: 'images/part1/GoingHome.webp'
     },
     {
       type: 'narrate',
@@ -242,7 +242,7 @@ const choiceResults = {
     {
       type: 'narrate',
       text: '但她那天晚上失眠了。',
-      bg: 'images/part1/Sleep.png'
+      bg: 'images/part1/Sleep.webp'
     },
     {
       type: 'narrate',
@@ -259,7 +259,7 @@ const choiceResults = {
       type: 'dialog',
       speaker: '阿哲',
       text: '我只是在教她啊',
-      bg: 'images/part1/Talking.png'
+      bg: 'images/part1/Talking.webp'
     },
     {
       type: 'dialog',
@@ -352,19 +352,19 @@ function startGame() {
   const game = document.getElementById('game');
 
   preloadImages([
-    'images/part1/Annoying.png',
-    'images/part1/Awkward.png',
-    'images/part1/Discussing.png',
-    'images/part1/GoingHome.png',
-    'images/part1/Lab.jpg',
-    'images/part1/Leaving.png',
-    'images/part1/Observe.png',
-    'images/part1/Revising.png',
-    'images/part1/Sleep.png',
-    'images/part1/Smiling.png',
-    'images/part1/Talking.png',
-    'images/part1/Teaching.png',
-    'images/part1/Unconfortable.png'
+    'images/part1/Annoying.webp',
+    'images/part1/Awkward.webp',
+    'images/part1/Discussing.webp',
+    'images/part1/GoingHome.webp',
+    'images/part1/Lab.webp',
+    'images/part1/Leaving.webp',
+    'images/part1/Observe.webp',
+    'images/part1/Revising.webp',
+    'images/part1/Sleep.webp',
+    'images/part1/Smiling.webp',
+    'images/part1/Talking.webp',
+    'images/part1/Teaching.webp',
+    'images/part1/Unconfortable.webp'
   ]);
 
   cin.style.transition = 'opacity 0.6s ease';

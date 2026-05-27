@@ -101,7 +101,7 @@
 <div class="angel-screen hidden" id="angel-screen" onclick="goKnowledgeCard()">
   <div class="angel-title">法官小天使</div>
   <div class="real-photo">
-  <img src="images/part2/realStreet.jpg">
+  <img src="images/part2/realStreet.webp">
   </div>
   <div class="angel-text" id="angel-text"></div>
 
@@ -161,7 +161,7 @@ const lines = [
   {
   type: 'narrate',
   text: '期中考前兩週。\n複習結束後，你們三個一起去了宵夜街。',
-  bg: 'images/part2/NightMarket.png'
+  bg: 'images/part2/NightMarket.webp'
   },
 
   {
@@ -195,7 +195,7 @@ const lines = [
   {
     type: 'narrate',
     text: '但你慢慢注意到，阿哲的視線幾乎一直停在小瑀身上。',
-    bg: 'images/part2/Watching.png'
+    bg: 'images/part2/Watching.webp'
   },
 
   {
@@ -205,7 +205,7 @@ const lines = [
   {
     type: 'narrate',
     text: '那之後幾天，你們還是照常一起複習、一起吃飯。',
-    bg: 'images/part2/Studying.png'
+    bg: 'images/part2/Studying.webp'
   },
 
   {
@@ -228,7 +228,7 @@ const lines = [
   {
     type: 'narrate',
     text: '阿哲把電腦轉向小瑀。',
-    bg: 'images/part2/Report.png'
+    bg: 'images/part2/Report.webp'
   },
   {
     type: 'dialog',
@@ -248,7 +248,7 @@ const lines = [
     type: 'dialog',
     speaker: '阿哲',
     text: '欸，你今天這件衣服很好看。',
-    bg: 'images/part2/Praise.png'
+    bg: 'images/part2/Praise.webp'
   },
   {
     type: 'narrate',
@@ -271,7 +271,7 @@ const lines = [
   {
     type: 'narrate',
     text: '隔了幾分鐘。',
-    bg: 'images/part2/Love.png'
+    bg: 'images/part2/Love.webp'
   },
   {
     type: 'dialog',
@@ -299,7 +299,7 @@ const lines = [
   {
     type: 'narrate',
     text: '小瑀沒有再說話。\n她低頭翻了一頁筆記，翻得很快。',
-    bg: 'images/part2/Quiet.png'
+    bg: 'images/part2/Quiet.webp'
   },
   {
     type: 'narrate',
@@ -308,12 +308,12 @@ const lines = [
   {
     type: 'narrate',
     text: '你們收拾東西離開時，她走得比平常快。',
-    bg: 'images/part2/Leaving.png'
+    bg: 'images/part2/Leaving.webp'
   },
   {
     type: 'narrate',
     text: '那天晚上，你看到阿哲在系群傳了一個梗圖。\n有點曖昧的那種。',
-    bg: 'images/part2/Message.png'
+    bg: 'images/part2/Message.webp'
   },
   {
     type: 'narrate',
@@ -346,7 +346,7 @@ const choiceResults = {
     {
       type: 'narrate',
       text: '你想了一下，還是打開手機，私訊了小瑀。',
-      bg: 'images/part2/Asking.png'
+      bg: 'images/part2/Asking.webp'
     },
     {
       type: 'dialog',
@@ -356,7 +356,7 @@ const choiceResults = {
     {
       type: 'narrate',
       text: '小瑀過了很久才回。',
-      bg: 'images/part2/Chat.png'
+      bg: 'images/part2/Chat.webp'
     },
     {
       type: 'dialog',
@@ -387,7 +387,7 @@ const choiceResults = {
       type: 'dialog',
       speaker: '小瑀',
       text: '好，謝謝你。',
-      bg: 'images/part2/aLast.png'
+      bg: 'images/part2/aLast.webp'
     },
     {
       type: 'narrate',
@@ -399,8 +399,7 @@ const choiceResults = {
     {
       type: 'narrate',
       text: '你看著群組裡的訊息，猶豫了一下。',
-      bg: 'images/part2/GroupMessage.png',
-      bg: 'images/part2/bChat.png'
+      bg: 'images/part2/bChat.webp'
     },
     {
       type: 'dialog',
@@ -410,7 +409,7 @@ const choiceResults = {
     {
       type: 'narrate',
       text: '小瑀看到你的哈哈，沉默了。',
-      bg: 'images/part2/Mute.png'
+      bg: 'images/part2/Mute.webp'
     },
     {
       type: 'narrate',
@@ -431,7 +430,7 @@ const choiceResults = {
     {
       type: 'narrate',
       text: '你想了想，決定私訊阿哲。',
-      bg: 'images/part2/cChat.png'
+      bg: 'images/part2/cChat.webp'
     },
     {
       type: 'dialog',
@@ -450,7 +449,7 @@ const choiceResults = {
     {
       type: 'narrate',
       text: '小瑀不知道你去說了這件事。',
-      bg: 'images/part2/cLast.png'
+      bg: 'images/part2/cLast.webp'
     },
     {
       type: 'narrate',
@@ -561,25 +560,25 @@ function startGame() {
   const game = document.getElementById('game');
 
   preloadImages([
-    'images/part2/aLast.png',
-    'images/part2/Asking.png',
-    'images/part2/bChat.png',
-    'images/part2/cChat.png',
-    'images/part2/Chat.png',
-    'images/part2/cLast.png',
-    'images/part2/Leaving.png',
-    'images/part2/Love.png',
-    'images/part2/Message.png',
-    'images/part2/Mute.png',
-    'images/part2/NightMarket.png',
-    'images/part2/NightStreet.png',
-    'images/part2/Praise.png',
-    'images/part2/Quiet.png',
-    'images/part2/realStreet.jpg',
-    'images/part2/RedLight.png',
-    'images/part2/Report.png',
-    'images/part2/Studying.png',
-    'images/part2/Watching.png'
+    'images/part2/aLast.webp',
+    'images/part2/Asking.webp',
+    'images/part2/bChat.webp',
+    'images/part2/cChat.webp',
+    'images/part2/Chat.webp',
+    'images/part2/cLast.webp',
+    'images/part2/Leaving.webp',
+    'images/part2/Love.webp',
+    'images/part2/Message.webp',
+    'images/part2/Mute.webp',
+    'images/part2/NightMarket.webp',
+    'images/part2/NightStreet.webp',
+    'images/part2/Praise.webp',
+    'images/part2/Quiet.webp',
+    'images/part2/realStreet.webp',
+    'images/part2/RedLight.webp',
+    'images/part2/Report.webp',
+    'images/part2/Studying.webp',
+    'images/part2/Watching.webp'
   ]);
   cin.style.transition = 'opacity 0.6s ease';
   cin.style.opacity = '0';
@@ -829,7 +828,7 @@ function showNightChoice() {
     {
       type: 'narrate',
       text: '你把手機收進口袋。\n夜晚的風有點涼。',
-      bg: 'images/part2/NightStreet.png'
+      bg: 'images/part2/NightStreet.webp'
     },
 
     {
@@ -861,7 +860,7 @@ const nightChoiceResults = {
       type: 'dialog',
       speaker: '你',
       text: '阿哲今天問的那句話……你還好嗎？',
-      bg: 'images/part2/RedLight.png'
+      bg: 'images/part2/RedLight.webp'
     },
 
     {
@@ -891,7 +890,7 @@ const nightChoiceResults = {
     {
       type: 'narrate',
       text: '回到宿舍後，你又打開手機。\n群組裡那張梗圖還停在畫面上。',
-      bg: 'images/part2/Message.png'
+      bg: 'images/part2/Message.webp'
     },
     {
       type: 'narrate',
@@ -909,7 +908,7 @@ const nightChoiceResults = {
       type: 'dialog',
       speaker: '你',
       text: '今晚吃得不錯，對吧。',
-      bg: 'images/part2/RedLight.png'
+      bg: 'images/part2/RedLight.webp'
     },
 
     {
@@ -933,7 +932,7 @@ const nightChoiceResults = {
     {
       type: 'narrate',
       text: '回到宿舍後，你又打開手機。\n群組裡那張梗圖還停在畫面上。',
-      bg: 'images/part2/Message.png'
+      bg: 'images/part2/Message.webp'
     },
     {
       type: 'narrate',
@@ -951,7 +950,7 @@ const nightChoiceResults = {
       type: 'dialog',
       speaker: '你',
       text: '我覺得阿哲那樣問你有點奇怪。',
-      bg: 'images/part2/RedLight.png'
+      bg: 'images/part2/RedLight.webp'
     },
 
     {
@@ -981,7 +980,7 @@ const nightChoiceResults = {
     {
       type: 'narrate',
       text: '回到宿舍後，你又打開手機。\n群組裡那張梗圖還停在畫面上。',
-      bg: 'images/part2/Message.png'
+      bg: 'images/part2/Message.webp'
     },
     {
       type: 'narrate',

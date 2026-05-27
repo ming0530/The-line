@@ -61,28 +61,28 @@ const lines = [
     {
     type: 'narrate',
     text: '九月，中央大學開學第一週',
-    bg: 'images/part0/Freshman_List.png'
+    bg: 'images/part0/Freshman_List.webp'
   },
   {
     type: 'narrate',
     text: '中央大學開學第一週，走廊的公佈欄上貼著碩士班的新生分組名單。',
-    bg: 'images/part0/Freshman_List.png'
+    bg: 'images/part0/Freshman_List.webp'
   },
   {
     type: 'narrate',
     text: '你、阿哲跟小瑀，都是今年同一批進來的碩一生。\n指導教授把你們三個分到同一組，說要「互相照顧」。',
-    bg: 'images/part0/Grouping.png'
+    bg: 'images/part0/Grouping.webp'
   },
   {
     type: 'narrate',
     text: '阿哲第一天就問小瑀借了筆記本，說自己的行李還沒寄到。\n小瑀遞過去，說「沒關係，留著用吧」。',
-    bg: 'images/part0/Borrowing.png'
+    bg: 'images/part0/Borrowing.webp'
   },
   {
     type: 'dialog',
     speaker: '阿哲',
     text: '那我請你吃飯還！',
-    bg: 'images/part0/Eating.png'
+    bg: 'images/part0/Eating.webp'
   },
   {
     type: 'dialog',
@@ -101,7 +101,7 @@ const lines = [
   {
   type: 'choice',
   text: '你記得剛進來的第一天，你心裡想的是什麼？',
-  bg: 'images/part0/Lab.png',
+  bg: 'images/part0/Lab.webp',
   choices: [
     '終於開始研究所生活了，感覺很新鮮。',
     '這個空間有點小，大家離得很近。',
@@ -122,11 +122,11 @@ function startGame() {
   const game = document.getElementById('game');
 
   preloadImages([
-  'images/part0/Borrowing.png',
-  'images/part0/Eating.png',
-  'images/part0/Freshman_List.png',
-  'images/part0/Grouping.png',
-  'images/part0/Lab.png'
+  'images/part0/Borrowing.webp',
+  'images/part0/Eating.webp',
+  'images/part0/Freshman_List.webp',
+  'images/part0/Grouping.webp',
+  'images/part0/Lab.webp'
 ]);
 
   cin.style.transition = 'opacity 0.6s ease';

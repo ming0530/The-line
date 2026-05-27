@@ -53,7 +53,7 @@
 <div class="angel-screen hidden" id="angel-screen" onclick="goKnowledgeCard()">
   <div class="angel-title">法官小天使</div>
     <div class="real-photo">
-  <img src="images/part3/realbusstop.jpg">
+  <img src="images/part3/realbusstop.webp">
   </div>
   <div class="angel-text" id="angel-text"></div>
 
@@ -104,7 +104,7 @@ const lines = [
   {
   type: 'narrate',
   text: '你站在夜晚的校園裡。\n你想起這三個月。',
-  bg: 'images/part3/map_timeline.png'
+  bg: 'images/part3/map_timeline.webp'
   },
   {
     type: 'narrate',
@@ -137,7 +137,7 @@ const lines = [
   {
     type: 'narrate',
     text: '那之後，小瑀在實驗室越來越少說話。',
-    bg: 'images/part3/lessTalk.png'
+    bg: 'images/part3/lessTalk.webp'
   },
   {
     type: 'narrate',
@@ -150,7 +150,7 @@ const lines = [
   {
     type: 'narrate',
     text: '阿哲還是每天在群組裡傳訊息，還是叫她一起去吃飯。',
-    bg: 'images/part3/Asking.png'
+    bg: 'images/part3/Asking.webp'
   },
     {
     type: 'narrate',
@@ -163,12 +163,12 @@ const lines = [
   {
     type: 'narrate',
     text: '某個週四晚上，你在圖書館待到很晚，正要回宿舍。',
-    bg: 'images/part3/Library_Night.png'
+    bg: 'images/part3/Library_Night.webp'
   },
   {
     type: 'narrate',
     text: '走到公車站，你看到小瑀一個人站在那裡。\n阿哲從後面走過來，站到她旁邊。',
-    bg: 'images/part3/Bus_Stop.png'
+    bg: 'images/part3/Bus_Stop.webp'
   },
   {
     type: 'dialog',
@@ -188,7 +188,7 @@ const lines = [
   {
     type: 'narrate',
     text: '公車來了。\n你也上車了，坐在稍微遠一點的位置，可以看到他們。',
-    bg: 'images/part3/Bus_Inside.png'
+    bg: 'images/part3/Bus_Inside.webp'
   },
   {
     type: 'narrate',
@@ -209,7 +209,7 @@ const lines = [
   {
     type: 'narrate',
     text: '下車之後，阿哲還是跟著小瑀走。\n你跟在後面，保持距離。',
-    bg: 'images/part3/Dorm_Walk.png'
+    bg: 'images/part3/Dorm_Walk.webp'
   },
   {
     type: 'dialog',
@@ -224,7 +224,7 @@ const lines = [
   {
     type: 'narrate',
     text: '她刷門進去，門關上了。',
-    bg: 'images/part3/Dorm_Gate.png'
+    bg: 'images/part3/Dorm_Gate.webp'
   },
   {
     type: 'narrate',
@@ -339,7 +339,7 @@ const choiceResults = {
     {
       type: 'narrate',
       text: '你站在宿舍樓下，猶豫了一下，還是傳了訊息。',
-      bg: 'images/part3/Message_Xiaoyu.png'
+      bg: 'images/part3/Message_Xiaoyu.webp'
     },
 
     {
@@ -357,7 +357,7 @@ const choiceResults = {
       type: 'dialog',
       speaker: '小瑀',
       text: '謝謝你來問。',
-      bg: 'images/part3/Happy.png'
+      bg: 'images/part3/Happy.webp'
     },
 
     {
@@ -386,7 +386,7 @@ const choiceResults = {
     {
       type: 'narrate',
       text: '她點了點頭。',
-      bg: 'images/part3/Nod.png'
+      bg: 'images/part3/Nod.webp'
     }
   ],
 
@@ -404,7 +404,7 @@ const choiceResults = {
     {
       type: 'narrate',
       text: '那天晚上，小瑀一個人待在宿舍裡很久。',
-      bg: 'images/part3/Alone.png'
+      bg: 'images/part3/Alone.webp'
     },
 
     {
@@ -432,7 +432,7 @@ const choiceResults = {
     {
       type: 'narrate',
       text: '你追上了阿哲。',
-      bg: 'images/part3/Talk_Azhe.png'
+      bg: 'images/part3/Talk_Azhe.webp'
     },
 
     {
@@ -534,20 +534,20 @@ function startGame() {
   const game = document.getElementById('game');
 
     preloadImages([
-      'images/part3/Alone.png',
-      'images/part3/Asking.png',
-      'images/part3/Bus_Inside.png',
-      'images/part3/Bus_Stop.png',
-      'images/part3/Dorm_Gate.png',
-      'images/part3/Dorm_Walk.png',
-      'images/part3/Happy.png',
-      'images/part3/lessTalk.png',
-      'images/part3/Library_Night.png',
-      'images/part3/map_timeline.png',
-      'images/part3/Message_Xiaoyu.png',
-      'images/part3/Nod.png',
-      'images/part3/realbusstop.jpg',
-      'images/part3/Talk_Azhe.png'
+      'images/part3/Alone.webp',
+      'images/part3/Asking.webp',
+      'images/part3/Bus_Inside.webp',
+      'images/part3/Bus_Stop.webp',
+      'images/part3/Dorm_Gate.webp',
+      'images/part3/Dorm_Walk.webp',
+      'images/part3/Happy.webp',
+      'images/part3/lessTalk.webp',
+      'images/part3/Library_Night.webp',
+      'images/part3/map_timeline.webp',
+      'images/part3/Message_Xiaoyu.webp',
+      'images/part3/Nod.webp',
+      'images/part3/realbusstop.webp',
+      'images/part3/Talk_Azhe.webp'
     ]);
 
   cin.style.transition = 'opacity 0.6s ease';

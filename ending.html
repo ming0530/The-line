@@ -112,7 +112,7 @@ const linesA = [
   {
     type: 'narrate',
     text: '隔天早上。',
-    bg: 'images/ending/Counseling_Center.png'
+    bg: 'images/ending/Counseling_Center.webp'
   },
 
   {
@@ -148,7 +148,7 @@ const linesA = [
   {
     type: 'narrate',
     text: '你陪小瑀走進來。',
-    bg: 'images/ending/Counseling_Hallway.png'
+    bg: 'images/ending/Counseling_Hallway.webp'
   },
   {
     type: 'narrate',
@@ -176,7 +176,7 @@ const linesA = [
   {
     type: 'narrate',
     text: '你坐在外面等。',
-    bg: 'images/ending/Waiting.png'
+    bg: 'images/ending/Waiting.webp'
   },
   {
     type: 'narrate',
@@ -214,7 +214,7 @@ const linesB = [
   {
     type: 'narrate',
     text: '隔天早上。',
-    bg: 'images/ending/Counseling_Center.png'
+    bg: 'images/ending/Counseling_Center.webp'
   },
   {
     type: 'narrate',
@@ -257,7 +257,7 @@ const linesB = [
   {
     type: 'narrate',
     text: '你陪小瑀走進來。',
-    bg: 'images/ending/Counseling_Hallway.png'
+    bg: 'images/ending/Counseling_Hallway.webp'
   },
   {
     type: 'narrate',
@@ -283,7 +283,7 @@ const linesB = [
   {
     type: 'narrate',
     text: '你坐在外面等。',
-    bg: 'images/ending/Waiting.png'
+    bg: 'images/ending/Waiting.webp'
   },
   {
     type: 'narrate',
@@ -315,7 +315,7 @@ const linesC = [
   {
     type: 'narrate',
     text: '隔天早上。',
-    bg: 'images/ending/Counseling_Center.png'
+    bg: 'images/ending/Counseling_Center.webp'
   },
   {
     type: 'narrate',
@@ -367,7 +367,7 @@ const linesC = [
   {
     type: 'narrate',
     text: '你陪小瑀走進來。',
-    bg: 'images/ending/Counseling_Hallway.png'
+    bg: 'images/ending/Counseling_Hallway.webp'
   },
   {
     type: 'narrate',
@@ -393,7 +393,7 @@ const linesC = [
   {
     type: 'narrate',
     text: '你坐在外面等。',
-    bg: 'images/ending/Waiting.png'
+    bg: 'images/ending/Waiting.webp'
   },
   {
     type: 'narrate',
@@ -428,7 +428,7 @@ const endingLines = [
   {
     type: 'narrate',
     text: '門開了。',
-    bg: 'images/ending/Door_Open.png'
+    bg: 'images/ending/Door_Open.webp'
   },
   {
     type: 'narrate',
@@ -478,20 +478,20 @@ function startGame() {
   const game = document.getElementById('game');
 
   preloadImages([
-    'images/ending/Counseling_Center.png',
-    'images/ending/Counseling_Hallway.png',
-    'images/ending/Door_Open.png',
-    'images/ending/ending1_lab.png',
-    'images/ending/ending2_library.png',
-    'images/ending/ending3_hallway.png',
-    'images/ending/ending4_board.png',
-    'images/ending/Waiting.png',
-    'images/real/night_street.jpg',
-    'images/real/campus_map.jpg',
-    'images/real/bus_stop.jpg',
-    'images/real/student_affairs.jpg',
-    'images/real/counseling.jpg',
-    'images/real/lab.jpg'
+    'images/ending/Counseling_Center.webp',
+    'images/ending/Counseling_Hallway.webp',
+    'images/ending/Door_Open.webp',
+    'images/ending/ending1_lab.webp',
+    'images/ending/ending2_library.webp',
+    'images/ending/ending3_hallway.webp',
+    'images/ending/ending4_board.webp',
+    'images/ending/Waiting.webp',
+    'images/real/night_street.webp',
+    'images/real/campus_map.webp',
+    'images/real/bus_stop.webp',
+    'images/real/student_affairs.webp',
+    'images/real/counseling.webp',
+    'images/real/lab.webp'
   ]);
 
   cin.style.transition = 'opacity 0.6s ease';
@@ -841,7 +841,7 @@ function showEndingScreen() {
 
   const endings = {
     3: {
-      bg: 'images/ending/ending1_lab.png',
+      bg: 'images/ending/ending1_lab.webp',
       lines: [
         { type: 'narrate', text: '三個月後。實驗室。' },
         { type: 'narrate', text: '小瑀還在，阿哲已經被指導教授調去另一組。' },
@@ -852,7 +852,7 @@ function showEndingScreen() {
       closing: '有人在，這件事本身，就已經讓人不那麼孤單。'
     },
     2: {
-      bg: 'images/ending/ending2_library.png',
+      bg: 'images/ending/ending2_library.webp',
       lines: [
         { type: 'narrate', text: '三個月後。圖書館。' },
         { type: 'narrate', text: '小瑀完成了三次諮商。她沒有走正式通報。' },
@@ -863,7 +863,7 @@ function showEndingScreen() {
       closing: '陪伴不需要每一次都完美，但每一次出現，都是真實的。'
     },
     1: {
-      bg: 'images/ending/ending3_hallway.png',
+      bg: 'images/ending/ending3_hallway.webp',
       lines: [
         { type: 'narrate', text: '三個月後。校園的某條走廊。' },
         { type: 'narrate', text: '你遠遠看到小瑀，她看到你，點了點頭。' },
@@ -873,7 +873,7 @@ function showEndingScreen() {
       closing: '一次出現，已經讓她知道有人看見她。但那一次，你還記得嗎？'
     },
     0: {
-      bg: 'images/ending/ending4_board.png',
+      bg: 'images/ending/ending4_board.webp',
       lines: [
         { type: 'narrate', text: '三個月後。開學典禮的公佈欄。' },
         { type: 'narrate', text: '你看到小瑀的名字出現在一份休學申請名單的邊角。' },
@@ -989,27 +989,27 @@ function showClosingScreen(text) {
   <div style="font-size: 12px; letter-spacing: 0.3em; color: rgba(255,255,255,0.3); margin-bottom: 16px;">LOCATION-取材自中央大學</div>
   <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
     <div style="text-align: center;">
-      <img src="images/real/night_street.jpg" style="width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 4px; opacity: 0.65; display: block;">
+      <img src="images/real/night_street.webp" style="width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 4px; opacity: 0.65; display: block;">
       <div style="font-size: 11px; color: rgba(255,255,255,0.35); margin-top: 6px; letter-spacing: 0.05em;">宵夜街</div>
     </div>
     <div style="text-align: center;">
-      <img src="images/real/campus_map.jpg" style="width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 4px; opacity: 0.65; display: block;">
+      <img src="images/real/campus_map.webp" style="width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 4px; opacity: 0.65; display: block;">
       <div style="font-size: 11px; color: rgba(255,255,255,0.35); margin-top: 6px; letter-spacing: 0.05em;">校園地圖</div>
     </div>
     <div style="text-align: center;">
-      <img src="images/real/bus_stop.jpg" style="width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 4px; opacity: 0.65; display: block;">
+      <img src="images/real/bus_stop.webp" style="width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 4px; opacity: 0.65; display: block;">
       <div style="font-size: 11px; color: rgba(255,255,255,0.35); margin-top: 6px; letter-spacing: 0.05em;">校內公車站牌</div>
     </div>
     <div style="text-align: center;">
-      <img src="images/real/student_affairs.jpg" style="width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 4px; opacity: 0.65; display: block;">
+      <img src="images/real/student_affairs.webp" style="width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 4px; opacity: 0.65; display: block;">
       <div style="font-size: 11px; color: rgba(255,255,255,0.35); margin-top: 6px; letter-spacing: 0.05em;">學務處</div>
     </div>
     <div style="text-align: center;">
-      <img src="images/real/counseling.jpg" style="width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 4px; opacity: 0.65; display: block;">
+      <img src="images/real/counseling.webp" style="width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 4px; opacity: 0.65; display: block;">
       <div style="font-size: 11px; color: rgba(255,255,255,0.35); margin-top: 6px; letter-spacing: 0.05em;">諮商中心</div>
     </div>
     <div style="text-align: center;">
-      <img src="images/real/lab.jpg" style="width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 4px; opacity: 0.65; display: block;">
+      <img src="images/real/lab.webp" style="width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 4px; opacity: 0.65; display: block;">
       <div style="font-size: 11px; color: rgba(255,255,255,0.35); margin-top: 6px; letter-spacing: 0.05em;">實驗室</div>
     </div>
   </div>
