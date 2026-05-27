@@ -351,6 +351,22 @@ function startGame() {
   const cin = document.getElementById('cinematic');
   const game = document.getElementById('game');
 
+  preloadImages([
+    'images/part1/Annoying.png',
+    'images/part1/Awkward.png',
+    'images/part1/Discussing.png',
+    'images/part1/GoingHome.png',
+    'images/part1/Lab.jpg',
+    'images/part1/Leaving.png',
+    'images/part1/Observe.png',
+    'images/part1/Revising.png',
+    'images/part1/Sleep.png',
+    'images/part1/Smiling.png',
+    'images/part1/Talking.png',
+    'images/part1/Teaching.png',
+    'images/part1/Unconfortable.png'
+  ]);
+
   cin.style.transition = 'opacity 0.6s ease';
   cin.style.opacity = '0';
 
@@ -359,6 +375,13 @@ function startGame() {
     game.classList.add('visible');
     renderLine(0);
   }, 600);
+}
+
+function preloadImages(urls) {
+  urls.forEach(url => {
+    const img = new Image();
+    img.src = url;
+  });
 }
 
 function renderLine(index) {

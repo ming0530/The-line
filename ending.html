@@ -477,6 +477,23 @@ function startGame() {
   const cin = document.getElementById('cinematic');
   const game = document.getElementById('game');
 
+  preloadImages([
+    'images/ending/Counseling_Center.png',
+    'images/ending/Counseling_Hallway.png',
+    'images/ending/Door_Open.png',
+    'images/ending/ending1_lab.png',
+    'images/ending/ending2_library.png',
+    'images/ending/ending3_hallway.png',
+    'images/ending/ending4_board.png',
+    'images/ending/Waiting.png',
+    'images/real/night_street.jpg',
+    'images/real/campus_map.jpg',
+    'images/real/bus_stop.jpg',
+    'images/real/student_affairs.jpg',
+    'images/real/counseling.jpg',
+    'images/real/lab.jpg'
+  ]);
+
   cin.style.transition = 'opacity 0.6s ease';
   cin.style.opacity = '0';
 
@@ -485,6 +502,13 @@ function startGame() {
     game.classList.add('visible');
     renderLine(0);
   }, 600);
+}
+
+function preloadImages(urls) {
+  urls.forEach(url => {
+    const img = new Image();
+    img.src = url;
+  });
 }
 
 function renderLine(index) {

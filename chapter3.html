@@ -533,6 +533,23 @@ function startGame() {
   const cin = document.getElementById('cinematic');
   const game = document.getElementById('game');
 
+    preloadImages([
+      'images/part3/Alone.png',
+      'images/part3/Asking.png',
+      'images/part3/Bus_Inside.png',
+      'images/part3/Bus_Stop.png',
+      'images/part3/Dorm_Gate.png',
+      'images/part3/Dorm_Walk.png',
+      'images/part3/Happy.png',
+      'images/part3/lessTalk.png',
+      'images/part3/Library_Night.png',
+      'images/part3/map_timeline.png',
+      'images/part3/Message_Xiaoyu.png',
+      'images/part3/Nod.png',
+      'images/part3/realbusstop.jpg',
+      'images/part3/Talk_Azhe.png'
+    ]);
+
   cin.style.transition = 'opacity 0.6s ease';
   cin.style.opacity = '0';
 
@@ -541,6 +558,13 @@ function startGame() {
     game.classList.add('visible');
     renderLine(0);
   }, 600);
+}
+
+function preloadImages(urls) {
+  urls.forEach(url => {
+    const img = new Image();
+    img.src = url;
+  });
 }
 
 function renderLine(index) {

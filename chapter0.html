@@ -121,6 +121,14 @@ function startGame() {
   const cin = document.getElementById('cinematic');
   const game = document.getElementById('game');
 
+  preloadImages([
+  'images/part0/Borrowing.png',
+  'images/part0/Eating.png',
+  'images/part0/Freshman_List.png',
+  'images/part0/Grouping.png',
+  'images/part0/Lab.png'
+]);
+
   cin.style.transition = 'opacity 0.6s ease';
   cin.style.opacity = '0';
 
@@ -129,6 +137,13 @@ function startGame() {
     game.classList.add('visible');
     renderLine(0);
   }, 600);
+}
+
+function preloadImages(urls) {
+  urls.forEach(url => {
+    const img = new Image();
+    img.src = url;
+  });
 }
 
 function renderLine(index) {

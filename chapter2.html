@@ -560,6 +560,27 @@ function startGame() {
   const cin = document.getElementById('cinematic');
   const game = document.getElementById('game');
 
+  preloadImages([
+    'images/part2/aLast.png',
+    'images/part2/Asking.png',
+    'images/part2/bChat.png',
+    'images/part2/cChat.png',
+    'images/part2/Chat.png',
+    'images/part2/cLast.png',
+    'images/part2/Leaving.png',
+    'images/part2/Love.png',
+    'images/part2/Message.png',
+    'images/part2/Mute.png',
+    'images/part2/NightMarket.png',
+    'images/part2/NightStreet.png',
+    'images/part2/Praise.png',
+    'images/part2/Quiet.png',
+    'images/part2/realStreet.jpg',
+    'images/part2/RedLight.png',
+    'images/part2/Report.png',
+    'images/part2/Studying.png',
+    'images/part2/Watching.png'
+  ]);
   cin.style.transition = 'opacity 0.6s ease';
   cin.style.opacity = '0';
 
@@ -568,6 +589,13 @@ function startGame() {
     game.classList.add('visible');
     renderLine(0);
   }, 600);
+}
+
+function preloadImages(urls) {
+  urls.forEach(url => {
+    const img = new Image();
+    img.src = url;
+  });
 }
 
 function renderLine(index) {
