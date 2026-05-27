@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>那條線｜第一章</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Noto+Serif+TC:wght@300;400;600&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/game.css">
+</head>
+
+<body>
+
+<div id="cinematic" onclick="startGame()">
+  <div class="cin-line"></div>
+  <div class="cin-text">那條線｜第一章</div>
+  <div class="cin-line"></div>
+    <div class="cin-text">過了三個月後</div>
+  <div class="cin-hint">▼</div>
+</div>
+
+<div id="game">
+  <div class="game-bg" id="game-bg"></div>
+
+  <div class="game-topbar">
+    <div class="chapter-label" id="chapter-label">第一章</div>
+  </div>
+
+  <div id="observation-area" class="hidden">
+
+  <div class="observation-overlay"></div>
+
+  <div class="observation-text">
+    你在角落看著這一切。<br>
+    你的眼睛注意到了什麼？
+  </div>
+
+  <!-- 點擊圈 -->
+  <div class="hotspot hotspot1" onclick="checkObservation(1)"></div>
+  <div class="hotspot hotspot2" onclick="checkObservation(2)"></div>
+  <div class="hotspot hotspot3" onclick="checkObservation(3)"></div>
+  <div id="observation-hint" class="observation-hint hidden"></div>
+
+  <div id="observation-progress">
+    已注意到的訊號：0 / 3
+  </div>
+</div>
+
+<div class="game-dialog" onclick="nextLine()">
+    <div class="speaker-name narrator" id="speaker-name">旁白</div>
+
+    <div class="dialog-box">
+      <div class="dialog-text" id="dialog-text"></div>
+      <div class="click-hint">▼ 點擊繼續</div>
+    </div>
+  </div>
+  <div class="choice-area hidden" id="choice-area">
+  <button onclick="chooseOption('A')">
+    A. 上前問她：「你還好嗎？剛剛那樣你會不舒服嗎？」
+  </button>
+
+  <button onclick="chooseOption('B')">
+    B. 覺得她已經說出來了，應該沒事，沒有特別做什麼
+  </button>
+
+  <button onclick="chooseOption('C')">
+    C. 去找阿哲，說：「欸你剛剛那樣感覺怪怪的」
+  </button>
+</div>
+</div>
+
+<div class="angel-screen hidden" id="angel-screen" onclick="goKnowledgeCard()">
+  <div class="angel-title">法官小天使</div>
+  <div class="real-photo">
+  <img src="images/part1/Lab.jpg">
+</div>
+  <div class="angel-text" id="angel-text"></div>
+
+  <div class="angel-hint">▼ 點擊繼續</div>
+</div>
+
+<div class="knowledge-screen hidden" id="knowledge-screen">
+
+  <div class="knowledge-card">
+
+    <div class="knowledge-label">
+      知識卡
+    </div>
+    <div class="knowledge-title">
+    </div>
+
+    <div class="knowledge-content" id="knowledge-content">
+    </div>
+
+    <div class="knowledge-button" onclick="nextKnowledgeCard()">
+    下一張 →
+    </div>
+  </div>
+</div>
+<!-- chapter1 -->
+<audio id="bgm" src="music/chapter1.mp3" loop></audio>
+<button class="music-btn" id="music-btn" onclick="toggleMusic()">♪</button>
+<script>
+const bgm = document.getElementById('bgm');
+const btn = document.getElementById('music-btn');
+let observationDone = {
+  1: false,
+  2: false,
+  3: false
+};
+
+let inObservation = false;
+let muted = false;
+
+document.addEventListener('click', () => {
+  if (bgm.paused) bgm.play();
+}, { once: true });
+
+function toggleMusic() {
+  muted = !muted;
+  bgm.muted = muted;
+  btn.style.opacity = muted ? '0.4' : '1';
+}
+</script>
+<script>
+const lines = [
+  {
+    type: 'narrate',
+    text: '某個週三下午，你在實驗室角落改報告。',
+    bg: 'images/part1/Revising.png'
+  },
+
+  {
+    type: 'narrate',
+    text: '阿哲跟小瑀在另一頭討論實驗數據。\n你一邊看著自己的螢幕，一邊聽見他們的聲音。',
+    bg: 'images/part1/Discussing.png'
+  },
+
+  {
+    type: 'dialog',
+    speaker: '阿哲',
+    text: '你這邊的數值跑出來了嗎？'
+  },
+
+  {
+    type: 'dialog',
+    speaker: '小瑀',
+    text: '還在跑，大概再十分鐘。'
+  },
+
+  {
+    type: 'dialog',
+    speaker: '阿哲',
+    text: '來，我教你調參數，這樣跑比較快。'
+  },
+
+  {
+    type: 'narrate',
+    text: '阿哲走到小瑀身後，俯身靠近她的螢幕。\n他的手從旁邊伸過來，放在她的手上，像是要「一起」操作滑鼠。',
+    bg: 'images/part1/Teaching.png'
+  },
+  {
+    type: 'observation'
+  },
+  {
+    type: 'narrate',
+    text: '小瑀的身體往椅背縮了一下。\n實驗室安靜了兩秒。',
+    bg: 'images/part1/Unconfortable.png'
+  },
+
+  {
+    type: 'dialog',
+    speaker: '小瑀',
+    text: '我可以自己來，謝謝。'
+  },
+
+  {
+    type: 'dialog',
+    speaker: '阿哲',
+    text: '喔，好。'
+  },
+
+  {
+    type: 'narrate',
+    text: '阿哲往後退了一步。\n他看起來有點尷尬，但沒有再說什麼。',
+    bg: 'images/part1/Awkward.png'
+  },
+
+  {
+    type: 'narrate',
+    text: '你注意到，小瑀等阿哲離開後，在座位上坐了很久沒動。',
+    bg: 'images/part1/Observe.png'
+  },
+  {
+    type: 'narrate',
+    text: '你看到了這一幕。散會後，小瑀一個人收拾東西準備離開。 你會怎麼做？',
+    bg: 'images/part1/Leaving.png'
+  }
+];
+
+const choiceResults = {
+  A: [
+    {
+    type: 'dialog',
+    speaker: '小瑀',
+    text: '還好啦，我說出來了。',
+    bg: 'images/part1/Annoying.png'
+    },
+
+    {
+    type: 'narrate',
+    text: '她停頓了一下，低聲補了一句：'
+    },
+
+    {
+    type: 'dialog',
+    speaker: '小瑀',
+    text: '只是有點煩。希望他不要再這樣。'
+    },
+    {
+      type: 'dialog',
+      speaker: '你',
+      text: '如果之後還是這樣，可以告訴我。'
+    },
+    {
+      type: 'narrate',
+      text: '她點了點頭。\n你的陪伴讓她知道，她不是一個人在面對這件事。',
+      bg: 'images/part1/Smiling.png'
+    }
+  ],
+
+  B: [
+    {
+      type: 'narrate',
+      text: '小瑀自己回去了。',
+      bg: 'images/part1/GoingHome.png'
+    },
+    {
+      type: 'narrate',
+      text: '你以為她說出來就沒事了。'
+    },
+    {
+      type: 'narrate',
+      text: '但她那天晚上失眠了。',
+      bg: 'images/part1/Sleep.png'
+    },
+    {
+      type: 'narrate',
+      text: '她不知道阿哲明天還會不會繼續。'
+    },
+    {
+      type: 'narrate',
+      text: '也沒有人知道她在想這件事。'
+    }
+  ],
+
+  C: [
+    {
+      type: 'dialog',
+      speaker: '阿哲',
+      text: '我只是在教她啊',
+      bg: 'images/part1/Talking.png'
+    },
+    {
+      type: 'dialog',
+      speaker: '阿哲',
+      text: '她自己說可以自己來就好了。'
+    },
+    {
+      type: 'narrate',
+      text: '你不知道還能怎麼說。'
+    },
+    {
+      type: 'narrate',
+      text: '他沒有意識到問題在哪裡。'
+    },
+    {
+      type: 'narrate',
+      text: '小瑀不知道你去找阿哲說了這件事。'
+    },
+    {
+      type: 'narrate',
+      text: '她有點不知道該怎麼想。'
+    }
+  ]
+};
+
+const angelText = `
+阿哲覺得自己只是在幫忙。
+
+但小瑀往後縮的那一秒，
+其實已經說了很多。
+
+學長姐手把手教學的互動，
+在有權力落差的關係裡，
+很容易讓人不敢直接說不舒服。
+
+小瑀這次說出來了——
+
+但不是每個人都做得到。
+`;
+
+const knowledgeCards = [
+
+  {
+    title: '肢體性騷擾',
+    content:
+    '未經同意的肢體接觸，即使是「教學」名義，仍可能構成性騷擾。'
+  },
+
+  {
+    title: '權力落差',
+    content:
+    '實驗室中學長姐與學弟妹、指導教授與學生之間的不對等，使拒絕更困難。'
+  },
+
+  {
+    title: '沉默不等於同意',
+    content:
+    '縮身、尷尬、沒有回應，都可能是不舒服的訊號。'
+  }
+
+];
+
+const observationTexts = {
+
+  1: `
+  小瑀的背往椅背貼了一下。<br>
+  那個動作很小，但你看到了。
+  `,
+
+  2: `
+  阿哲的手覆在她的手上。<br>
+  她的手指沒有動。
+  `,
+
+  3: `
+  小瑀沒有看他。<br>
+  她盯著螢幕，但你感覺她根本沒在看。
+  `
+};
+
+
+let current = 0;
+let isChoosing = false;
+let resultLines = [];
+let resultIndex = 0;
+let knowledgeIndex = 0;
+
+function startGame() {
+  const cin = document.getElementById('cinematic');
+  const game = document.getElementById('game');
+
+  cin.style.transition = 'opacity 0.6s ease';
+  cin.style.opacity = '0';
+
+  setTimeout(() => {
+    cin.style.display = 'none';
+    game.classList.add('visible');
+    renderLine(0);
+  }, 600);
+}
+
+function renderLine(index) {
+  const line = lines[index];
+
+  if (line.type === 'observation') {
+  startObservation();
+  return;
+}
+
+  if (line.bg) {
+    document.getElementById('game-bg').style.backgroundImage = `url('${line.bg}')`;
+  }
+
+  const speakerEl = document.getElementById('speaker-name');
+
+  if (line.type === 'narrate') {
+    speakerEl.textContent = '旁白';
+    speakerEl.className = 'speaker-name narrator';
+  } else {
+    speakerEl.textContent = line.speaker;
+        if (line.speaker === '阿哲') {
+        speakerEl.className = 'speaker-name azhe';
+        }
+        else if (line.speaker === '小瑀') {
+        speakerEl.className = 'speaker-name xiaoyu';
+        }
+        else {
+        speakerEl.className = 'speaker-name';
+        }
+  }
+
+  document.getElementById('dialog-text').innerHTML =
+    line.text.replace(/\n/g, '<br>');
+}
+
+function nextLine() {
+  if (inObservation) return;
+  if (isChoosing) return;
+
+  if (resultLines.length > 0) {
+    if (resultIndex < resultLines.length - 1) {
+      resultIndex++;
+      renderLineFromObject(resultLines[resultIndex]);
+    } else {
+      showAngel();
+    }
+    return;
+  }
+
+  if (current < lines.length - 1) {
+    current++;
+    renderLine(current);
+  } else {
+    showChoices();
+  }
+}
+
+function showChoices() {
+  isChoosing = true;
+
+  document.getElementById('choice-area')
+    .classList.remove('hidden');
+
+  document.querySelector('.game-dialog')
+    .classList.add('dim');
+}
+
+function chooseOption(option) {
+  localStorage.setItem('chapter1Choice', option);
+  isChoosing = false;
+  document.getElementById('choice-area').classList.add('hidden');
+  document.querySelector('.game-dialog').classList.remove('dim');
+
+  resultLines = choiceResults[option];
+  resultIndex = 0;
+
+  renderLineFromObject(resultLines[resultIndex]);
+}
+
+function renderLineFromObject(line) {
+  if (line.bg) {
+    document.getElementById('game-bg').style.backgroundImage = `url('${line.bg}')`;
+  }
+
+  const speakerEl = document.getElementById('speaker-name');
+
+  if (line.type === 'narrate') {
+    speakerEl.textContent = '旁白';
+    speakerEl.className = 'speaker-name narrator';
+  } else {
+    speakerEl.textContent = line.speaker;
+        if (line.speaker === '阿哲') {
+        speakerEl.className = 'speaker-name azhe';
+        }
+        else if (line.speaker === '小瑀') {
+        speakerEl.className = 'speaker-name xiaoyu';
+        }
+        else {
+        speakerEl.className = 'speaker-name';
+        }
+  }
+
+  document.getElementById('dialog-text').innerHTML =
+    line.text.replace(/\n/g, '<br>');
+}
+function showAngel() {
+  document.getElementById('angel-screen').classList.remove('hidden');
+
+  document.getElementById('angel-text').innerHTML =
+    angelText.replace(/\n/g, '<br>');
+}
+
+function goKnowledgeCard() {
+
+  document.getElementById('angel-screen')
+    .classList.add('hidden');
+
+  document.getElementById('knowledge-screen')
+    .classList.remove('hidden');
+
+  renderKnowledgeCard();
+}
+
+function renderKnowledgeCard() {
+  const card = knowledgeCards[knowledgeIndex];
+  const cardBox = document.querySelector('.knowledge-card');
+
+  cardBox.style.animation = 'none';
+  cardBox.offsetHeight;
+  cardBox.style.animation = 'cardFadeIn 0.45s ease both';
+
+  document.querySelector('.knowledge-title').innerHTML = card.title;
+
+  document.getElementById('knowledge-content').innerHTML = card.content;
+}
+
+function nextKnowledgeCard() {
+
+  if (knowledgeIndex < knowledgeCards.length - 1) {
+
+    knowledgeIndex++;
+
+    renderKnowledgeCard();
+
+    if (knowledgeIndex === knowledgeCards.length - 1) {
+
+      document.querySelector('.knowledge-button')
+        .innerHTML = '進入下一章 →';
+    }
+
+  } else {
+
+    goNextChapter();
+
+  }
+}
+
+function startObservation() {
+
+  inObservation = true;
+
+  observationDone = {
+    1: false,
+    2: false,
+    3: false
+  };
+
+  // 重置進度
+  document.getElementById('observation-progress')
+    .innerHTML = '已注意到的訊號：0 / 3';
+
+  // 清空提示
+  document.getElementById('observation-hint')
+    .classList.add('hidden');
+
+  // 顯示圈圈
+  document.querySelector('.hotspot1').style.display = 'block';
+  document.querySelector('.hotspot2').style.display = 'block';
+  document.querySelector('.hotspot3').style.display = 'block';
+
+  document.querySelector('.game-dialog')
+    .classList.add('hidden');
+
+  document.getElementById('observation-area')
+    .classList.remove('hidden');
+}
+
+function checkObservation(num) {
+
+  // 已經點過就不再觸發
+  if (observationDone[num]) return;
+
+  observationDone[num] = true;
+
+  // 隱藏圈圈
+  document.querySelector('.hotspot' + num)
+    .style.display = 'none';
+
+  // 顯示提示文字
+  const hint = document.getElementById('observation-hint');
+
+  hint.classList.remove('hidden');
+
+  hint.innerHTML = observationTexts[num];
+
+  // 更新進度
+  const count =
+    Object.values(observationDone).filter(v => v).length;
+
+  document.getElementById('observation-progress')
+    .innerHTML = `已注意到的訊號：${count} / 3`;
+
+  // 全部完成
+  if (
+    observationDone[1] &&
+    observationDone[2] &&
+    observationDone[3]
+  ) {
+
+    setTimeout(() => {
+
+      finishObservation();
+
+    }, 1800);
+
+  }
+}
+function finishObservation() {
+
+  inObservation = false;
+
+  document.getElementById('observation-area')
+    .classList.add('hidden');
+
+  document.querySelector('.game-dialog')
+    .classList.remove('hidden');
+
+  current++;
+
+  renderLine(current);
+}
+
+function goNextChapter() {
+  window.location.href = 'chapter2.html';
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>那條線</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Noto+Serif+TC:wght@300;400;600&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+
+<div class="cover">
+  <div class="cover-bg"></div>
+  <div class="cover-content">
+    <div class="cover-title">那條線</div>
+    <div class="cover-en">The Line · A Bystander's Story</div>
+    <div class="divider"></div>
+    <div class="cover-desc">
+      你、阿哲、小瑀，是來自中央大學<br>同一個實驗室的新進來的碩一生。<br>
+      三個月後，你開始覺得有哪裡不對勁。<br>
+      但你一直不確定，自己該不該說什麼。
+    </div>
+    <button class="btn-start" onclick="window.location.href='chapter0.html'">
+      開 始 遊 戲
+    </button>
+    <div class="warning">⚠ 本故事含性騷擾相關情節，供教育用途。如有不適可隨時離開。</div>
+  </div>
+</div>
+
+<audio id="bgm" src="music/index.mp3" loop></audio>
+<button class="music-btn" id="music-btn" onclick="toggleMusic()">♪</button>
+<script>
+const bgm = document.getElementById('bgm');
+const btn = document.getElementById('music-btn');
+let muted = false;
+
+document.addEventListener('click', () => {
+  if (bgm.paused) bgm.play();
+}, { once: true });
+
+function toggleMusic() {
+  muted = !muted;
+  bgm.muted = muted;
+  btn.textContent = muted ? '♪' : '♪';
+  btn.style.opacity = muted ? '0.4' : '1';
+}
+</script>
+</body>
+</html>

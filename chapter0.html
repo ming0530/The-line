@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>那條線｜序章</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Noto+Serif+TC:wght@300;400;600&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/game.css">
+</style>
+</head>
+
+<body>
+
+<div id="cinematic" onclick="startGame()">
+  <div class="cin-line"></div>
+  <div class="cin-text">那條線｜序章</div>
+  <div class="cin-line"></div>
+  <div class="cin-text">九月，開學第一週</div>
+  <div class="cin-hint">▼</div>
+</div>
+
+<div id="game">
+  <div class="game-bg" id="game-bg"></div>
+
+  <div class="game-topbar">
+    <div class="chapter-label" id="chapter-label">序章</div>
+  </div>
+
+  <div class="game-dialog" onclick="nextLine()">
+    <div class="speaker-name narrator" id="speaker-name">旁白</div>
+
+    <div class="dialog-box">
+      <div class="dialog-text" id="dialog-text"></div>
+      <div class="click-hint">▼ 點擊繼續</div>
+    </div>
+  </div>
+  <div class="choice-area hidden" id="choice-area"></div>
+</div>
+<!-- chapter0 -->
+<audio id="bgm" src="music/chapter0.mp3" loop></audio>
+<button class="music-btn" id="music-btn" onclick="toggleMusic()">♪</button>
+<script>
+const bgm = document.getElementById('bgm');
+const btn = document.getElementById('music-btn');
+let muted = false;
+
+document.addEventListener('click', () => {
+  if (bgm.paused) bgm.play();
+}, { once: true });
+
+function toggleMusic() {
+  muted = !muted;
+  bgm.muted = muted;
+  btn.style.opacity = muted ? '0.4' : '1';
+}
+</script>
+
+<script>
+const lines = [
+    {
+    type: 'narrate',
+    text: '九月，中央大學開學第一週',
+    bg: 'images/part0/Freshman_List.png'
+  },
+  {
+    type: 'narrate',
+    text: '中央大學開學第一週，走廊的公佈欄上貼著碩士班的新生分組名單。',
+    bg: 'images/part0/Freshman_List.png'
+  },
+  {
+    type: 'narrate',
+    text: '你、阿哲跟小瑀，都是今年同一批進來的碩一生。\n指導教授把你們三個分到同一組，說要「互相照顧」。',
+    bg: 'images/part0/Grouping.png'
+  },
+  {
+    type: 'narrate',
+    text: '阿哲第一天就問小瑀借了筆記本，說自己的行李還沒寄到。\n小瑀遞過去，說「沒關係，留著用吧」。',
+    bg: 'images/part0/Borrowing.png'
+  },
+  {
+    type: 'dialog',
+    speaker: '阿哲',
+    text: '那我請你吃飯還！',
+    bg: 'images/part0/Eating.png'
+  },
+  {
+    type: 'dialog',
+    speaker: '小瑀',
+    text: '不用啦。'
+  },
+  {
+    type: 'dialog',
+    speaker: '阿哲',
+    text: '那下次再說。'
+  },
+  {
+    type: 'narrate',
+    text: '你當時覺得他們挺自然的。\n那時候你沒想太多。'
+  },
+  {
+  type: 'choice',
+  text: '你記得剛進來的第一天，你心裡想的是什麼？',
+  bg: 'images/part0/Lab.png',
+  choices: [
+    '終於開始研究所生活了，感覺很新鮮。',
+    '這個空間有點小，大家離得很近。',
+    '希望跟同組的人處得來。'
+  ]
+  } ,
+  {
+  type: 'narrate',
+  text: '你沒想到，三個月後，這個空間會讓你開始思考一件事：你可以假裝沒看見嗎？'
+ }
+];
+
+
+let current = 0;
+
+function startGame() {
+  const cin = document.getElementById('cinematic');
+  const game = document.getElementById('game');
+
+  cin.style.transition = 'opacity 0.6s ease';
+  cin.style.opacity = '0';
+
+  setTimeout(() => {
+    cin.style.display = 'none';
+    game.classList.add('visible');
+    renderLine(0);
+  }, 600);
+}
+
+function renderLine(index) {
+  const line = lines[index];
+  const speakerEl = document.getElementById('speaker-name');
+  const dialogText = document.getElementById('dialog-text');
+  const choiceArea = document.getElementById('choice-area');
+
+  choiceArea.innerHTML = '';
+  choiceArea.classList.add('hidden');
+  document.querySelector('.game-dialog').style.display = 'block';
+
+  if (line.bg) {
+    document.getElementById('game-bg').style.backgroundImage = `url('${line.bg}')`;
+  }
+
+  if (line.type === 'choice') {
+    speakerEl.textContent = '旁白';
+    speakerEl.className = 'speaker-name narrator';
+    dialogText.innerHTML = line.text.replace(/\n/g, '<br>');
+
+    choiceArea.classList.remove('hidden');
+
+    line.choices.forEach((choiceText, i) => {
+      const btn = document.createElement('button');
+      btn.textContent = String.fromCharCode(65 + i) + '. ' + choiceText;
+      btn.onclick = function(event) {
+        event.stopPropagation();
+        current++;
+        renderLine(current);
+      };
+      choiceArea.appendChild(btn);
+    });
+
+    return;
+  }
+
+  if (line.type === 'narrate') {
+    speakerEl.textContent = '旁白';
+    speakerEl.className = 'speaker-name narrator';
+  } else {
+    speakerEl.textContent = line.speaker;
+
+    if (line.speaker === '阿哲') {
+      speakerEl.className = 'speaker-name azhe';
+    } else if (line.speaker === '小瑀') {
+      speakerEl.className = 'speaker-name xiaoyu';
+    } else {
+      speakerEl.className = 'speaker-name';
+    }
+  }
+
+  dialogText.innerHTML = line.text.replace(/\n/g, '<br>');
+}
+
+function nextLine() {
+  const line = lines[current];
+
+  // 如果目前是選擇題，禁止點對話框跳過
+  if (line.type === 'choice') {
+    return;
+  }
+
+  if (current < lines.length - 1) {
+    current++;
+    renderLine(current);
+  } else {
+    window.location.href = 'chapter1.html';
+  }
+}
+</script>
+
+</body>
+</html>

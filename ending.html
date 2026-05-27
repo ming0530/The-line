@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>那條線｜終章</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Noto+Serif+TC:wght@300;400;600&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/game.css">
+</head>
+
+<body>
+
+<div id="cinematic" onclick="startGame()">
+  <div class="cin-line"></div>
+  <div class="cin-text">那條線｜終章</div>
+  <div class="cin-line"></div>
+    <div class="cin-text">隔天早上</div>
+  <div class="cin-hint">▼</div>
+</div>
+
+<div id="game">
+  <div class="game-bg" id="game-bg"></div>
+
+  <div class="game-topbar">
+    <div class="chapter-label" id="chapter-label">終章</div>
+  </div>
+
+  <div class="game-dialog" onclick="nextLine()">
+    <div class="speaker-name narrator" id="speaker-name">旁白</div>
+
+    <div class="dialog-box">
+      <div class="dialog-text" id="dialog-text"></div>
+      <div class="click-hint">▼ 點擊繼續</div>
+    </div>
+  </div>
+</div>
+<div id="door-info-screen" class="hidden">
+  <div class="door-panel">
+    <h2>走廊上的三扇門</h2>
+    <p>小瑀停在走廊前。她不知道該先去哪裡。</p>
+
+    <button onclick="openDoorInfo('counsel')">諮商輔導中心</button>
+    <button onclick="openDoorInfo('gender')">學務處性平會</button>
+    <button onclick="openDoorInfo('outside')">校外資源：勵馨基金會</button>
+
+    <div id="door-info-text"></div>
+
+    <button id="door-continue-btn" class="hidden" onclick="finishDoorInfo()">
+      我想先去說說看
+    </button>
+  </div>
+</div>
+
+<div id="support-quiz-screen" class="hidden">
+  <div class="support-panel">
+    <h2 id="support-question"></h2>
+    <div id="support-options"></div>
+    <div id="support-feedback"></div>
+  </div>
+</div>
+
+<div id="resource-paper-screen" class="hidden">
+  <div class="resource-paper">
+    <h2>諮商師給小瑀的那張紙</h2>
+    <p>你和小瑀一起讀著紙上的資源。</p>
+    <div class="resource-body">
+      <div class="resource-list">
+        <button onclick="openResource('counsel')">學校諮商中心</button>
+        <button onclick="openResource('gender')">學務處性平會</button>
+        <button onclick="openResource('hospital')">中壢天晟醫院</button>
+        <button onclick="openResource('garden')">勵馨基金會（桃園）</button>
+        <button onclick="openResource('police')">中壢分局 / 派出所</button>
+      </div>
+      <div class="resource-detail" id="resource-text">
+        點選左側機構查看說明。
+      </div>
+    </div>
+    <button id="resource-continue-btn" class="hidden" onclick="finishResourcePaper()">
+      繼續
+    </button>
+  </div>
+</div>
+
+
+<!-- ending -->
+<audio id="bgm" src="music/end.mp3" loop></audio>
+<button class="music-btn" id="music-btn" onclick="toggleMusic()">♪</button>
+
+</div>
+
+<script>
+const bgm = document.getElementById('bgm');
+const btn = document.getElementById('music-btn');
+let muted = false;
+
+document.addEventListener('click', () => {
+  if (bgm.paused) bgm.play();
+}, { once: true });
+
+function toggleMusic() {
+  muted = !muted;
+  bgm.muted = muted;
+  btn.style.opacity = muted ? '0.4' : '1';
+}
+</script>
+
+<script>
+
+const linesA = [
+
+  {
+    type: 'narrate',
+    text: '隔天早上。',
+    bg: 'images/ending/Counseling_Center.png'
+  },
+
+  {
+    type: 'narrate',
+    text: '你陪小瑀走進了學務處。'
+  },
+
+  {
+    type: 'narrate',
+    text: '走廊比你想的要安靜。'
+  },
+
+  {
+    type: 'dialog',
+    speaker: '小瑀',
+    text: '我以為會有很多人看到我進去。'
+  },
+
+  {
+    type: 'doorInfo'
+  },
+
+  {
+    type: 'narrate',
+    text: '你們一起看完三扇門的說明。'
+  },
+  {
+    type: 'dialog',
+    speaker: '小瑀',
+    text: '我想先去諮商中心談談看。'
+  },
+
+  {
+    type: 'narrate',
+    text: '你陪小瑀走進來。',
+    bg: 'images/ending/Counseling_Hallway.png'
+  },
+  {
+    type: 'narrate',
+    text: '你看到情緒充電站的桌子，上面有幾本書，一個「歡迎索取」的牌子，還有兩盆植物'
+  },
+
+  {
+    type: 'narrate',
+    text: '小瑀拿起一本翻了翻，又放下。'
+  },
+
+  {
+    type: 'dialog',
+    speaker: '你',
+    text: '這裡好像不會有人評判你。'
+  },
+  {
+    type: 'dialog',
+    speaker: '小瑀',
+    text: '嗯。'
+  },
+  {
+    type: 'supportQuiz'
+  },
+  {
+    type: 'narrate',
+    text: '你坐在外面等。',
+    bg: 'images/ending/Waiting.png'
+  },
+  {
+    type: 'narrate',
+    text: '你想起這三個月。'
+  },
+
+  {
+    type: 'narrate',
+    text: '實驗室那個下午。\n她說：「我可以自己來。」'
+  },
+
+  {
+    type: 'narrate',
+    text: '教室裡。\n她笑著說：「我們是同學啊。」'
+  },
+
+  {
+    type: 'narrate',
+    text: '公車站。\n她背靠著車廂側壁，沒有地方再退。'
+  },
+
+  {
+    type: 'narrate',
+    text: '你想。\n如果你更早問她，事情會不會不一樣。'
+  },
+
+  {
+    type: 'narrate',
+    text: '你也想。\n她最後願意說出來，這件事本身，就已經很不容易了。'
+  }
+
+];
+
+const linesB = [
+  {
+    type: 'narrate',
+    text: '隔天早上。',
+    bg: 'images/ending/Counseling_Center.png'
+  },
+  {
+    type: 'narrate',
+    text: '你在學務處外面的走廊看到小瑀。'
+  },
+  {
+    type: 'narrate',
+    text: '她一個人站在門口，看起來像是已經站了一段時間。'
+  },
+  {
+    type: 'narrate',
+    text: '你愣了一下，走過去。'
+  },
+  {
+    type: 'dialog',
+    speaker: '小瑀',
+    text: '我昨天晚上查了很久……還是想來問問看。'
+  },
+  {
+    type: 'dialog',
+    speaker: '你',
+    text: '要我陪你一起看嗎？'
+  },
+  {
+    type: 'narrate',
+    text: '她點了點頭。'
+  },
+  {
+    type: 'doorInfo'
+  },
+  {
+    type: 'narrate',
+    text: '你們一起看完三扇門的說明。'
+  },
+  {
+    type: 'dialog',
+    speaker: '小瑀',
+    text: '我想先去諮商中心談談看。'
+  },
+  {
+    type: 'narrate',
+    text: '你陪小瑀走進來。',
+    bg: 'images/ending/Counseling_Hallway.png'
+  },
+  {
+    type: 'narrate',
+    text: '你看到情緒充電站的桌子，上面有幾本書，一個「歡迎索取」的牌子，還有兩盆植物。'
+  },
+  {
+    type: 'narrate',
+    text: '小瑀拿起一本翻了翻，又放下。'
+  },
+  {
+    type: 'dialog',
+    speaker: '你',
+    text: '這裡好像不會有人評判你。'
+  },
+  {
+    type: 'dialog',
+    speaker: '小瑀',
+    text: '嗯。'
+  },
+  {
+    type: 'supportQuiz'
+  },
+  {
+    type: 'narrate',
+    text: '你坐在外面等。',
+    bg: 'images/ending/Waiting.png'
+  },
+  {
+    type: 'narrate',
+    text: '你想起這三個月。'
+  },
+  {
+    type: 'narrate',
+    text: '實驗室那個下午。\n她說：「我可以自己來。」'
+  },
+  {
+    type: 'narrate',
+    text: '教室裡。\n她笑著說：「我們是同學啊。」'
+  },
+  {
+    type: 'narrate',
+    text: '公車站。\n她背靠著車廂側壁，沒有地方再退。'
+  },
+  {
+    type: 'narrate',
+    text: '你想。\n昨晚你沒有問她。'
+  },
+  {
+    type: 'narrate',
+    text: '但她今天還是來了。\n一個人撐到這裡，然後你剛好在。'
+  }
+];
+
+const linesC = [
+  {
+    type: 'narrate',
+    text: '隔天早上。',
+    bg: 'images/ending/Counseling_Center.png'
+  },
+  {
+    type: 'narrate',
+    text: '你收到小瑀的訊息。'
+  },
+  {
+    type: 'dialog',
+    speaker: '小瑀',
+    text: '我想去學務處問問看，可是我不知道要去哪裡。'
+  },
+  {
+    type: 'narrate',
+    text: '你看著訊息，想起昨晚你去找阿哲說了很多。'
+  },
+  {
+    type: 'narrate',
+    text: '但她其實一個人在宿舍裡待了一整晚。'
+  },
+  {
+    type: 'dialog',
+    speaker: '你',
+    text: '我陪你去。'
+  },
+  {
+    type: 'narrate',
+    text: '她過了一會兒回：「好。」'
+  },
+  {
+    type: 'narrate',
+    text: '走廊比你想的要安靜。'
+  },
+  {
+    type: 'dialog',
+    speaker: '小瑀',
+    text: '我以為會有很多人看到我進去。'
+  },
+  {
+    type: 'doorInfo'
+  },
+  {
+    type: 'narrate',
+    text: '你們一起看完三扇門的說明。'
+  },
+  {
+    type: 'dialog',
+    speaker: '小瑀',
+    text: '我想先去諮商中心談談看。'
+  },
+  {
+    type: 'narrate',
+    text: '你陪小瑀走進來。',
+    bg: 'images/ending/Counseling_Hallway.png'
+  },
+  {
+    type: 'narrate',
+    text: '你看到情緒充電站的桌子，上面有幾本書，一個「歡迎索取」的牌子，還有兩盆植物。'
+  },
+  {
+    type: 'narrate',
+    text: '小瑀拿起一本翻了翻，又放下。'
+  },
+  {
+    type: 'dialog',
+    speaker: '你',
+    text: '這裡好像不會有人評判你。'
+  },
+  {
+    type: 'dialog',
+    speaker: '小瑀',
+    text: '嗯。'
+  },
+  {
+    type: 'supportQuiz'
+  },
+  {
+    type: 'narrate',
+    text: '你坐在外面等。',
+    bg: 'images/ending/Waiting.png'
+  },
+  {
+    type: 'narrate',
+    text: '你想起這三個月。'
+  },
+  {
+    type: 'narrate',
+    text: '實驗室那個下午。\n她說：「我可以自己來。」'
+  },
+  {
+    type: 'narrate',
+    text: '教室裡。\n她笑著說：「我們是同學啊。」'
+  },
+  {
+    type: 'narrate',
+    text: '公車站。\n她背靠著車廂側壁，沒有地方再退。'
+  },
+  {
+    type: 'narrate',
+    text: '你想起昨晚去找阿哲。\n你說了你覺得對的話。'
+  },
+  {
+    type: 'narrate',
+    text: '但她今天傳訊息給你，不是因為昨晚那件事。\n她只是不知道要去哪裡，想找一個人陪。'
+  }
+];
+
+const chapter3Choice = localStorage.getItem('chapter3Choice') || 'A';
+const lines = chapter3Choice === 'A' ? linesA : chapter3Choice === 'B' ? linesB : linesC;
+
+const endingLines = [
+  {
+    type: 'narrate',
+    text: '門開了。',
+    bg: 'images/ending/Door_Open.png'
+  },
+  {
+    type: 'narrate',
+    text: chapter3Choice === 'A' ? '小瑀走出來，看到你還在。' : '小瑀走出來。你站在等候區抬起頭。'
+  },
+  {
+    type: 'dialog',
+    speaker: '小瑀',
+    text: '謝謝你今天陪我來。'
+  },
+  {
+    type: 'dialog',
+    speaker: '你',
+    text: '還好嗎？'
+  },
+  {
+    type: 'dialog',
+    speaker: '小瑀',
+    text: '好一點了。諮商師說可以再去談。'
+  },
+  {
+    type: 'narrate',
+    text: '你看到她手上拿著一張紙。'
+  },
+  {
+    type: 'dialog',
+    speaker: '小瑀',
+    text: '諮商師給我的。說如果我想繼續，這些地方都可以去。'
+  },
+  {
+    type: 'resourcePaper'
+  }
+];
+
+
+
+
+let current = 0;
+let knowledgeIndex = 0;
+let endingMode = false;
+let endingIndex = 0;
+
+let isChoosing = false;
+
+function startGame() {
+  const cin = document.getElementById('cinematic');
+  const game = document.getElementById('game');
+
+  cin.style.transition = 'opacity 0.6s ease';
+  cin.style.opacity = '0';
+
+  setTimeout(() => {
+    cin.style.display = 'none';
+    game.classList.add('visible');
+    renderLine(0);
+  }, 600);
+}
+
+function renderLine(index) {
+  const line = lines[index];
+
+  if (line.bg) {
+    document.getElementById('game-bg').style.backgroundImage = `url('${line.bg}')`;
+  }
+
+  const speakerEl = document.getElementById('speaker-name');
+
+  if (line.type === 'narrate') {
+    speakerEl.textContent = '旁白';
+    speakerEl.className = 'speaker-name narrator';
+  } else {
+    speakerEl.textContent = line.speaker;
+        if (line.speaker === '阿哲') {
+        speakerEl.className = 'speaker-name azhe';
+        }
+        else if (line.speaker === '小瑀') {
+        speakerEl.className = 'speaker-name xiaoyu';
+        }
+        else {
+        speakerEl.className = 'speaker-name';
+        }
+  }
+
+  document.getElementById('dialog-text').innerHTML =
+    line.text.replace(/\n/g, '<br>');
+}
+
+function nextLine() {
+  if (isChoosing) return;
+
+  if (endingMode) {
+    if (endingIndex < endingLines.length - 1) {
+      endingIndex++;
+
+      if (endingLines[endingIndex].type === 'resourcePaper') {
+        showResourcePaper();
+      } else {
+        renderLineObject(endingLines[endingIndex]);
+      }
+
+    } else {
+      showEndingScreen();
+    }
+    return;
+  }
+
+  if (current < lines.length - 1) {
+    current++;
+
+    if (lines[current].type === 'doorInfo') {
+      showDoorInfo();
+      return;
+    }
+
+    if (lines[current].type === 'supportQuiz') {
+      showSupportQuiz();
+      return;
+    }
+
+    renderLine(current);
+
+  } else {
+    showEndingLines();
+  }
+}
+
+let openedDoors = [];
+
+const doorInfoText = {
+  counsel: '諮商輔導中心：如果還沒準備好通報，也可以先跟人談談，整理自己的感受。',
+  gender: '學務處性平會：如果希望學校正式介入、啟動調查，可以從這裡了解流程。',
+  outside: '校外資源：像勵馨基金會，可以提供法律、陪同、報案前諮詢等支持。'
+};
+
+function showDoorInfo() {
+  isChoosing = true;
+  openedDoors = [];
+  document.getElementById('door-info-screen').classList.remove('hidden');
+}
+
+
+function openDoorInfo(type) {
+  document.getElementById('door-info-text').innerHTML = doorInfoText[type];
+
+  if (!openedDoors.includes(type)) {
+    openedDoors.push(type);
+  }
+
+  if (openedDoors.length === 3) {
+    document.getElementById('door-continue-btn').classList.remove('hidden');
+  }
+}
+
+function finishDoorInfo() {
+  document.getElementById('door-info-screen').classList.add('hidden');
+  isChoosing = false;
+
+  current++;
+  renderLine(current);
+}
+
+let supportIndex = 0;
+let supportCorrect = 0;
+
+const supportQuestions = [
+  {
+    question: '小瑀說：「我說不好，也不知道這樣夠不夠資格去。」',
+    options: {
+      A: '你一定要去，這麼嚴重你必須通報！',
+      B: '你當然有資格，說你能說的就好。',
+      C: '其實還好啦，就當去聊聊天。'
+    },
+    correct: 'B',
+    feedback: {
+      A: '小瑀低下頭。「一定要」讓她感覺更有壓力。',
+      B: '小瑀肩膀慢慢放鬆了一點。她需要知道，自己的感受本身就足夠。',
+      C: '小瑀安靜了幾秒。這句話讓她有點不確定自己是不是被認真看待。'
+    }
+  },
+  {
+    question: '小瑀說：「如果去了，諮商師會逼我通報嗎？」',
+    options: {
+      A: '不知道，你自己去問吧。',
+      B: '應該不會，諮商是保密的。',
+      C: '當然不會，你不用擔心。'
+    },
+    correct: 'B',
+    feedback: {
+      A: '小瑀抿了一下嘴，像是又想退回去。',
+      B: '小瑀點了點頭。這個回答讓她比較安心。',
+      C: '小瑀看起來還是有點不安。過度保證，反而可能讓她更混亂。'
+    }
+  },
+  {
+    question: '小瑀說：「我怕說出去大家都知道了。」',
+    options: {
+      A: '這個你要自己決定，我沒辦法保證。',
+      B: '諮商是保密的，除非你同意，否則不會告訴別人。',
+      C: '沒關係啦，大家都知道也沒差。'
+    },
+    correct: 'B',
+    feedback: {
+      A: '小瑀沉默了。她需要的不是被推回自己一個人決定。',
+      B: '小瑀輕輕嗯了一聲，像是終於比較敢往前一步。',
+      C: '小瑀沒有接話。對她來說，被大家知道不是小事。'
+    }
+  }
+];
+
+function showSupportQuiz() {
+  isChoosing = true;
+  supportIndex = 0;
+  supportCorrect = 0;
+  document.getElementById('support-quiz-screen').classList.remove('hidden');
+  renderSupportQuestion();
+}
+
+function renderSupportQuestion() {
+  const q = supportQuestions[supportIndex];
+
+  document.getElementById('support-question').innerHTML = q.question;
+
+  document.getElementById('support-options').innerHTML = `
+    <button onclick="answerSupport('A')">A. ${q.options.A}</button>
+    <button onclick="answerSupport('B')">B. ${q.options.B}</button>
+    <button onclick="answerSupport('C')">C. ${q.options.C}</button>
+  `;
+
+  document.getElementById('support-feedback').innerHTML = '';
+}
+
+function answerSupport(option) {
+  const q = supportQuestions[supportIndex];
+
+  if (option === q.correct) {
+    supportCorrect++;
+  }
+
+  document.getElementById('support-feedback').innerHTML = q.feedback[option];
+
+  setTimeout(() => {
+    supportIndex++;
+
+    if (supportIndex < supportQuestions.length) {
+      renderSupportQuestion();
+    } else {
+      finishSupportQuiz();
+    }
+  }, 1800);
+}
+
+function finishSupportQuiz() {
+  localStorage.setItem('supportCorrect', supportCorrect);
+
+  document.getElementById('support-quiz-screen').classList.add('hidden');
+  isChoosing = false;
+
+  let resultLine;
+
+  if (supportCorrect === 3) {
+    resultLine = {
+      type: 'dialog',
+      speaker: '小瑀',
+      text: '好。'
+    };
+  } else if (supportCorrect === 2) {
+    resultLine = {
+      type: 'narrate',
+      text: '小瑀有一點猶豫，但還是點了點頭。'
+    };
+  } else {
+    resultLine = {
+      type: 'dialog',
+      speaker: '小瑀',
+      text: '嗯，但那個笑有點空。'
+    };
+  }
+
+  lines.splice(current + 1, 0,
+    resultLine,
+    {
+      type: 'narrate',
+      text: '小瑀深吸一口氣，走進去了。'
+    }
+  );
+
+  current++;
+  renderLine(current);
+}
+
+let openedResources = [];
+
+const resourceText = {
+  gender: '你說：「這個是……正式申訴用的嗎？」<br><br>小瑀說：「她說如果我想讓學校啟動調查，可以去這裡。但我還沒決定。」',
+  counsel: '你說：「這個就是你剛剛去的地方。」<br><br>小瑀說：「嗯，她說可以再去談。」',
+  hospital: '你說：「這個是？」<br><br>小瑀沉默了一下。「如果之後需要醫療或保存紀錄，也可以來這裡。」',
+  garden: '你說：「這個我沒聽過。」<br><br>小瑀說：「諮商師說他們可以陪我去警察局，如果我想去的話。還有法律的事也可以問他們。」',
+  police: '你說：「這個你有考慮嗎？」<br><br>小瑀說：「還不確定。但知道有這個選項，比較安心。打110，或是去派出所都可以。」'
+};
+
+function showResourcePaper() {
+  isChoosing = true;
+  openedResources = [];
+  document.getElementById('resource-paper-screen').classList.remove('hidden');
+}
+function openResource(type) {
+  document.getElementById('resource-text').innerHTML = resourceText[type];
+
+  if (!openedResources.includes(type)) {
+    openedResources.push(type);
+  }
+
+  if (openedResources.length === 5) {
+    document.getElementById('resource-continue-btn').classList.remove('hidden');
+  }
+}
+
+function finishResourcePaper() {
+  document.getElementById('resource-paper-screen').classList.add('hidden');
+  isChoosing = false;
+
+  endingLines.splice(endingIndex + 1, 0,
+    {
+      type: 'dialog',
+      speaker: '小瑀',
+      text: '諮商師說……不一定要現在就決定什麼。知道有這些地方在，就夠了。'
+    },
+    {
+      type: 'narrate',
+      text: '她停了一下。'
+    },
+    {
+      type: 'dialog',
+      speaker: '小瑀',
+      text: '她說，這五個地方，不是你一定要走遍的清單。而是在你準備好的時候，讓你知道：每一扇門，都是打開著的。'
+    }
+  );
+
+  endingIndex++;
+  renderLineObject(endingLines[endingIndex]);
+}
+
+function renderLineObject(line) {
+  if (line.bg) {
+    document.getElementById('game-bg').style.backgroundImage = `url('${line.bg}')`;
+  }
+
+  const speakerEl = document.getElementById('speaker-name');
+
+  if (line.type === 'narrate') {
+    speakerEl.textContent = '旁白';
+    speakerEl.className = 'speaker-name narrator';
+  } else {
+    speakerEl.textContent = line.speaker;
+
+    if (line.speaker === '阿哲') {
+      speakerEl.className = 'speaker-name azhe';
+    } else if (line.speaker === '小瑀') {
+      speakerEl.className = 'speaker-name xiaoyu';
+    } else {
+      speakerEl.className = 'speaker-name';
+    }
+  }
+
+  document.getElementById('dialog-text').innerHTML =
+    line.text.replace(/\n/g, '<br>');
+}
+
+
+function showEndingLines() {
+
+  endingMode = true;
+  endingIndex = 0;
+
+  renderLineObject(endingLines[endingIndex]);
+}
+
+function showEndingScreen() {
+  const c1 = localStorage.getItem('chapter1Choice') || 'B';
+  const c2 = localStorage.getItem('chapter2Choice') || 'B';
+  const c3 = localStorage.getItem('chapter3Choice') || 'B';
+  const score = [c1, c2, c3].filter(c => c === 'A').length;
+  const nightRoad = localStorage.getItem('nightRoadChoice') || 'B';
+  const bus = localStorage.getItem('busChoice') || 'C';
+  const support = Number(localStorage.getItem('supportCorrect') || 0);
+
+  const endings = {
+    3: {
+      bg: 'images/ending/ending1_lab.png',
+      lines: [
+        { type: 'narrate', text: '三個月後。實驗室。' },
+        { type: 'narrate', text: '小瑀還在，阿哲已經被指導教授調去另一組。' },
+        { type: 'dialog', speaker: '小瑀', text: '上週性平會的結果出來了。他需要去上輔導課程。' },
+        { type: 'dialog', speaker: '小瑀', text: '謝謝你那三次都來問我。我不確定我一個人能走到這裡。' },
+      ],
+      variants: buildVariants1(nightRoad, bus, support),
+      closing: '有人在，這件事本身，就已經讓人不那麼孤單。'
+    },
+    2: {
+      bg: 'images/ending/ending2_library.png',
+      lines: [
+        { type: 'narrate', text: '三個月後。圖書館。' },
+        { type: 'narrate', text: '小瑀完成了三次諮商。她沒有走正式通報。' },
+        { type: 'dialog', speaker: '小瑀', text: '諮商師說，選擇不通報是我的權利。但我知道那裡有這個選項了。' },
+        { type: 'dialog', speaker: '小瑀', text: '有一次你沒有來問我——我記得那天晚上。但其他兩次，我記得更清楚。' },
+      ],
+      variants: buildVariants2(nightRoad, bus, support),
+      closing: '陪伴不需要每一次都完美，但每一次出現，都是真實的。'
+    },
+    1: {
+      bg: 'images/ending/ending3_hallway.png',
+      lines: [
+        { type: 'narrate', text: '三個月後。校園的某條走廊。' },
+        { type: 'narrate', text: '你遠遠看到小瑀，她看到你，點了點頭。' },
+        { type: 'narrate', text: '你記得那一次你去問她，她說「謝謝你來問」。你不知道後來她怎麼了。你也沒有再問。' },
+      ],
+      variants: buildVariants3(nightRoad, bus, support),
+      closing: '一次出現，已經讓她知道有人看見她。但那一次，你還記得嗎？'
+    },
+    0: {
+      bg: 'images/ending/ending4_board.png',
+      lines: [
+        { type: 'narrate', text: '三個月後。開學典禮的公佈欄。' },
+        { type: 'narrate', text: '你看到小瑀的名字出現在一份休學申請名單的邊角。' },
+        { type: 'narrate', text: '你想起那三次，你都覺得「應該沒事了」。' },
+      ],
+      variants: buildVariants4(nightRoad, bus, support),
+      closing: '她最後還是走進了諮商中心。不是因為有人陪她去，而是因為她一個人撐到了那裡。那有多難，你現在才開始想。'
+    }
+  };
+
+  const ending = endings[score] || endings[0];
+  const allLines = [...ending.lines, ...ending.variants];
+
+  document.getElementById('game-bg').style.backgroundImage = `url('${ending.bg}')`;
+
+  let ei = 0;
+  renderLineObject(allLines[0]);
+
+  const oldDialog = document.querySelector('.game-dialog');
+  oldDialog.onclick = function() {
+    ei++;
+    if (ei < allLines.length) {
+      renderLineObject(allLines[ei]);
+    } else {
+      oldDialog.onclick = null;
+      showClosingScreen(ending.closing);
+    }
+  };
+}
+
+function buildVariants1(nightRoad, bus, support) {
+  const lines = [];
+  if (nightRoad === 'A') lines.push({ type: 'dialog', speaker: '小瑀', text: '你那天在紅燈口問我還好嗎，我一直記得。那時候我覺得，至少有一個人注意到了。' });
+  if (bus === 'A') lines.push({ type: 'dialog', speaker: '小瑀', text: '還有那次在公車上，你走過來說「欸小瑀你也在」——我知道你是故意的。謝謝你。' });
+  else if (bus === 'B') lines.push({ type: 'dialog', speaker: '小瑀', text: '那次公車上你站過來，你以為我沒注意到，但我有。' });
+  if (support === 3) lines.push({ type: 'dialog', speaker: '小瑀', text: '你在門口說的那些話，我後來一直在想。你說我當然有資格去——我那時候真的需要有人這樣告訴我。' });
+  else if (support === 2) lines.push({ type: 'dialog', speaker: '小瑀', text: '你陪我去那天，我很慶幸你在。' });
+  return lines;
+}
+
+function buildVariants2(nightRoad, bus, support) {
+  const lines = [];
+  if (nightRoad === 'A') lines.push({ type: 'dialog', speaker: '小瑀', text: '你那天在紅燈口問我，我當時說還好。其實不太好。但你問了，這件事我記得。' });
+  else lines.push({ type: 'dialog', speaker: '小瑀', text: '有時候我在想，如果那天有人問我一句就好了。' });
+  if (bus === 'A' || bus === 'B') lines.push({ type: 'dialog', speaker: '小瑀', text: '那次公車上你過來——我知道你看到了。謝謝你沒有假裝沒看見。' });
+  else lines.push({ type: 'dialog', speaker: '小瑀', text: '那次公車上其實很難受。我一直等有人過來，但沒有。' });
+  if (support === 3) lines.push({ type: 'dialog', speaker: '小瑀', text: '你在門口說的話讓我比較放心去。雖然你有一次沒有出現，但那天你在。' });
+  return lines;
+}
+
+function buildVariants3(nightRoad, bus, support) {
+  const lines = [];
+  if (nightRoad === 'A') lines.push({ type: 'narrate', text: '你想起那天紅燈口，你問她還好嗎。她說還好。你以為真的還好。' });
+  else lines.push({ type: 'narrate', text: '你想起那天宵夜街，你們走出來，你沒有說什麼。你不確定說了會怎樣。' });
+  if (bus === 'A' || bus === 'B') lines.push({ type: 'narrate', text: '你想起那次公車上你走過去。你做了一件事。但那之後，你沒有再跟進。' });
+  else lines.push({ type: 'narrate', text: '你想起那次公車上你站在原地。你告訴自己等等看。後來你忘了等。' });
+  if (support <= 1) lines.push({ type: 'narrate', text: '你陪她去那天，你不確定自己說的對不對。她還是走進去了。你不知道那對她來說是什麼感覺。' });
+  return lines;
+}
+
+function buildVariants4(nightRoad, bus, support) {
+  const lines = [];
+  if (nightRoad === 'A') lines.push({ type: 'narrate', text: '你想起那天你在紅燈口問她還好嗎。她說還好。你點了頭，沒有再追問。' });
+  else lines.push({ type: 'narrate', text: '你想起那天宵夜街，你們走出來，你沒有說什麼。那時候你在想別的事。' });
+  if (bus === 'A' || bus === 'B') lines.push({ type: 'narrate', text: '你那次在公車上走過去。你做了一件事。但下車之後，你沒有再問她。' });
+  else lines.push({ type: 'narrate', text: '你那次在公車上站在原地。你想說也許沒那麼嚴重。你現在想，也許你錯了。' });
+  if (support === 3) lines.push({ type: 'narrate', text: '你陪她去那天，你說了對的話。但那一次之前，你沒有出現過。一次，不夠。' });
+  else lines.push({ type: 'narrate', text: '你陪她去那天，你站在外面等。你不確定自己說的話有沒有幫到她。現在想，可能沒有。' });
+  return lines;
+}
+
+function showClosingScreen(text) {
+  const screen = document.createElement('div');
+  screen.style.cssText = `
+    position: fixed; inset: 0; z-index: 300;
+    background: #000; display: flex;
+    align-items: center; justify-content: center;
+    padding: 40px 80px; opacity: 0;
+    transition: opacity 1.2s ease;
+    cursor: pointer;
+  `;
+
+  const quote = document.createElement('div');
+  quote.style.cssText = `
+    font-family: 'Noto Serif TC', serif;
+    font-size: 36px; font-weight: 300;
+    line-height: 2.4; color: rgba(255,255,255,0.88);
+    text-align: center; max-width: 760px;
+    transition: all 1s ease;
+    position: absolute;
+  `;
+  quote.innerHTML = text;
+
+  const twoCol = document.createElement('div');
+  twoCol.style.cssText = `
+    display: flex; gap: 80px;
+    align-items: flex-start;
+    width: 100%; max-width: 1600px;
+    opacity: 0; transition: opacity 1s ease;
+    pointer-events: none;
+  `;
+
+  twoCol.innerHTML = `
+<div style="flex: 1; color: rgba(255,255,255,0.75); font-family: 'Noto Serif TC', serif; overflow-y: auto; max-height: 80vh;">
+  
+  <div style="font-size: 12px; letter-spacing: 0.3em; color: rgba(255,255,255,0.3); margin-bottom: 16px;">SPECIAL THANKS</div>
+  <div style="font-size: 16px; line-height: 2.2; margin-bottom: 40px; color: rgba(255,255,255,0.7);">
+    特別感謝<br>
+    國立中央大學性平會<br>
+    <span style="color: rgba(255,255,255,0.5); font-size: 14px;">萬怡灼老師</span>
+  </div>
+
+  <div style="font-size: 12px; letter-spacing: 0.3em; color: rgba(255,255,255,0.3); margin-bottom: 16px;">LOCATION-取材自中央大學</div>
+  <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
+    <div style="text-align: center;">
+      <img src="images/real/night_street.jpg" style="width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 4px; opacity: 0.65; display: block;">
+      <div style="font-size: 11px; color: rgba(255,255,255,0.35); margin-top: 6px; letter-spacing: 0.05em;">宵夜街</div>
+    </div>
+    <div style="text-align: center;">
+      <img src="images/real/campus_map.jpg" style="width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 4px; opacity: 0.65; display: block;">
+      <div style="font-size: 11px; color: rgba(255,255,255,0.35); margin-top: 6px; letter-spacing: 0.05em;">校園地圖</div>
+    </div>
+    <div style="text-align: center;">
+      <img src="images/real/bus_stop.jpg" style="width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 4px; opacity: 0.65; display: block;">
+      <div style="font-size: 11px; color: rgba(255,255,255,0.35); margin-top: 6px; letter-spacing: 0.05em;">校內公車站牌</div>
+    </div>
+    <div style="text-align: center;">
+      <img src="images/real/student_affairs.jpg" style="width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 4px; opacity: 0.65; display: block;">
+      <div style="font-size: 11px; color: rgba(255,255,255,0.35); margin-top: 6px; letter-spacing: 0.05em;">學務處</div>
+    </div>
+    <div style="text-align: center;">
+      <img src="images/real/counseling.jpg" style="width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 4px; opacity: 0.65; display: block;">
+      <div style="font-size: 11px; color: rgba(255,255,255,0.35); margin-top: 6px; letter-spacing: 0.05em;">諮商中心</div>
+    </div>
+    <div style="text-align: center;">
+      <img src="images/real/lab.jpg" style="width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 4px; opacity: 0.65; display: block;">
+      <div style="font-size: 11px; color: rgba(255,255,255,0.35); margin-top: 6px; letter-spacing: 0.05em;">實驗室</div>
+    </div>
+  </div>
+
+</div>
+
+    <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 24px;">
+      <div style="
+        font-family: 'Noto Serif TC', serif;
+        font-size: 22px; font-weight: 300;
+        line-height: 2.2; color: rgba(255,255,255,0.75);
+        text-align: center;
+      ">${text}</div>
+      <div style="font-size: 16px; color: rgba(255,255,255,0.45); font-family: 'Noto Serif TC', serif;">
+        如果我身邊有人像小瑀，我會＿＿＿＿＿＿。
+      </div>
+      <textarea style="
+        width: 100%; height: 110px;
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 14px; padding: 14px 18px;
+        color: white; font-size: 16px;
+        font-family: 'Noto Serif TC', serif;
+        line-height: 1.8; resize: none; outline: none;
+      " placeholder="寫下你的想法..."></textarea>
+        <div style="
+          font-size: 13px; color: rgba(255,255,255,0.35);
+          font-family: 'Noto Serif TC', serif;
+          text-align: center; line-height: 2.4;
+          margin-bottom: 8px;
+        ">
+          如果你或身邊的人需要協助：<br>
+          <a href="https://love.adm.ncu.edu.tw/NCU_counsel/" target="_blank" style="color: rgba(252,217,122,0.6); text-decoration: none;">
+            中央大學諮商輔導中心
+          </a>
+          &nbsp;:&nbsp; 03-422-7151 #57151<br>
+          <a href="https://gender.ncu.edu.tw/" target="_blank" style="color: rgba(252,217,122,0.6); text-decoration: none;">
+            中央大學性平會（萬怡灼老師）
+          </a>
+          &nbsp;:&nbsp; 03-422-7151 #57268<br>
+          <a href="https://1925.mohw.gov.tw" target="_blank" style="color: rgba(252,217,122,0.6); text-decoration: none;">
+            1925 安心專線
+          </a>
+          &nbsp;:&nbsp;（24小時）
+        </div>
+      <div onclick="location.href='index.html'" style="
+        padding: 12px 32px; border-radius: 999px;
+        border: 1px solid rgba(246,215,119,0.3);
+        color: #f6d777; font-size: 15px;
+        cursor: pointer; font-family: 'Noto Serif TC', serif;
+      ">回到首頁</div>
+    </div>
+  `;
+
+  screen.appendChild(quote);
+  screen.appendChild(twoCol);
+  document.body.appendChild(screen);
+
+  let revealed = false;
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => { screen.style.opacity = '1'; });
+  });
+
+  screen.addEventListener('click', (e) => {
+    if (!revealed && !e.target.closest('textarea') && !e.target.closest('[onclick]')) {
+      revealed = true;
+      quote.style.opacity = '0';
+      quote.style.pointerEvents = 'none';
+      setTimeout(() => {
+        quote.style.display = 'none';
+        twoCol.style.opacity = '1';
+        twoCol.style.pointerEvents = 'auto';
+        screen.style.cursor = 'default';
+        screen.style.alignItems = 'center';
+      }, 800);
+    }
+  });
+}
+</script>
+
+</body>
+</html>

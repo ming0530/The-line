@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>那條線｜第二章</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Noto+Serif+TC:wght@300;400;600&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/game.css">
+</head>
+
+<body>
+
+<div id="cinematic" onclick="startGame()">
+  <div class="cin-line"></div>
+  <div class="cin-text">那條線｜第二章</div>
+  <div class="cin-line"></div>
+    <div class="cin-text">期中考前兩週</div>
+  <div class="cin-hint">▼</div>
+</div>
+
+<div id="game">
+  <div class="game-bg" id="game-bg"></div>
+
+  <div class="game-topbar">
+    <div class="chapter-label" id="chapter-label">第二章</div>
+  </div>
+
+  <div class="game-dialog" onclick="nextLine()">
+    <div class="speaker-name narrator" id="speaker-name">旁白</div>
+
+    <div class="dialog-box">
+      <div class="dialog-text" id="dialog-text"></div>
+      <div class="click-hint">▼ 點擊繼續</div>
+    </div>
+  </div>
+  <div class="choice-area hidden" id="choice-area">
+  <button onclick="chooseOption('A')">
+    A. 私訊小瑀：「你還好嗎？今天那些話你聽了感覺怎樣？」
+  </button>
+
+  <button onclick="chooseOption('B')">
+    B. 在群組裡回一個「哈哈」，帶過去，覺得不關自己的事
+  </button>
+
+  <button onclick="chooseOption('C')">
+    C. 私訊阿哲：「欸你那個訊息感覺有點奇怪，她可能不喜歡」
+  </button>
+  </div>
+  <div id="line-puzzle" class="hidden">
+
+    <div class="line-phone">
+      <div class="line-header">實驗室群組</div>
+
+      <label class="line-msg left" id="msg1">
+        <input type="checkbox">
+        <span>今天討論很順，辛苦大家了 👍</span>
+      </label>
+
+      <label class="line-msg left" id="msg2">
+        <input type="checkbox">
+        <span>你今天這件衣服很好看</span>
+      </label>
+
+      <label class="line-msg left" id="msg3">
+        <input type="checkbox">
+        <span>你有沒有喜歡過我？我繼續等你喔</span>
+      </label>
+
+      <label class="line-msg left" id="msg4">
+        <input type="checkbox">
+        <span>這讓我想到小瑀 哈哈</span>
+      </label>
+
+      <label class="line-msg left" id="msg5">
+        <input type="checkbox">
+        <span>下次一起去吃飯嗎？</span>
+      </label>
+
+    <button id="line-start-btn" onclick="startLineAnalysis()">我想好了</button>
+
+    <div id="line-feedback" class="line-feedback hidden"></div>
+
+    <button id="line-next-btn" class="hidden" onclick="nextLineAnalysis()">下一則 →</button>
+
+    <button id="line-finish-btn" class="hidden" onclick="finishLinePuzzle()">我明白了</button>
+    </div>
+    <div class="line-task">
+  <div class="line-task-title">任務：判斷訊息</div>
+  <div class="line-task-text">
+    你看著群組訊息。<br>
+    有些話像玩笑，但有些人可能已經開始不舒服。<br>
+    請選出「可能讓小瑀感到壓力」的訊息。（可複選）
+  </div>
+</div>
+
+</div>
+</div>
+</div>
+
+<div class="angel-screen hidden" id="angel-screen" onclick="goKnowledgeCard()">
+  <div class="angel-title">法官小天使</div>
+  <div class="real-photo">
+  <img src="images/part2/realStreet.jpg">
+  </div>
+  <div class="angel-text" id="angel-text"></div>
+
+  <div class="angel-hint">▼ 點擊繼續</div>
+</div>
+
+<div class="knowledge-screen hidden" id="knowledge-screen">
+
+  <div class="knowledge-card">
+
+    <div class="knowledge-label">
+      知識卡
+    </div>
+
+    <div class="knowledge-title">
+    </div>
+
+    <div class="knowledge-content" id="knowledge-content">
+    </div>
+
+    <div class="knowledge-button" onclick="nextKnowledgeCard()">
+    下一張 →
+    </div>
+  </div>
+
+</div>
+<!-- chapter2 -->
+<audio id="bgm" src="music/chapter2.mp3" loop></audio>
+<button class="music-btn" id="music-btn" onclick="toggleMusic()">♪</button>
+<script>
+const bgm = document.getElementById('bgm');
+const btn = document.getElementById('music-btn');
+let muted = false;
+
+document.addEventListener('click', () => {
+  if (bgm.paused) bgm.play();
+}, { once: true });
+
+function toggleMusic() {
+  muted = !muted;
+  bgm.muted = muted;
+  btn.style.opacity = muted ? '0.4' : '1';
+}
+</script>
+
+<script>
+
+const lines = [
+  {
+    type: 'narrate',
+    text: '那之後幾個禮拜，阿哲好像有收斂一點。'
+  },
+    {
+    type: 'narrate',
+    text: '你以為事情就這樣過去了。'
+  },
+  {
+  type: 'narrate',
+  text: '期中考前兩週。\n複習結束後，你們三個一起去了宵夜街。',
+  bg: 'images/part2/NightMarket.png'
+  },
+
+  {
+    type: 'narrate',
+    text: '晚上的宵夜街很亮。\n炸物店、飲料店跟機車聲混在一起。'
+  },
+
+  {
+    type: 'dialog',
+    speaker: '阿哲',
+    text: '這條街我剛來中大的時候每天晚上都來，現在也是。'
+  },
+
+  {
+    type: 'dialog',
+    speaker: '小瑀',
+    text: '我都沒來過。'
+  },
+
+  {
+    type: 'dialog',
+    speaker: '你',
+    text: '這裡很適合解壓。'
+  },
+
+  {
+    type: 'narrate',
+    text: '那其實是一個很普通的晚上。'
+  },
+
+  {
+    type: 'narrate',
+    text: '但你慢慢注意到，阿哲的視線幾乎一直停在小瑀身上。',
+    bg: 'images/part2/Watching.png'
+  },
+
+  {
+    type: 'narrate',
+    text: '有幾次，小瑀轉過頭時，剛好對上他的眼神。\n她很快又移開了。'
+  },
+  {
+    type: 'narrate',
+    text: '那之後幾天，你們還是照常一起複習、一起吃飯。',
+    bg: 'images/part2/Studying.png'
+  },
+
+  {
+    type: 'narrate',
+    text: '很多事情表面上看起來都很正常。'
+  },
+
+  {
+    type: 'narrate',
+    text: '直到某天晚上。\n你們又約在普通教室複習。'
+  },
+  {
+    type: 'narrate',
+    text: '三個人坐在同一排。'
+  },
+  {
+    type: 'narrate',
+    text: '你在整理筆記。\n他們兩個在討論一份共同報告。'
+  },
+  {
+    type: 'narrate',
+    text: '阿哲把電腦轉向小瑀。',
+    bg: 'images/part2/Report.png'
+  },
+  {
+    type: 'dialog',
+    speaker: '阿哲',
+    text: '你看這段，我覺得可以這樣改。'
+  },
+  {
+    type: 'narrate',
+    text: '小瑀看了一下，點了點頭。'
+  },
+  {
+    type: 'dialog',
+    speaker: '小瑀',
+    text: '好，這樣比較清楚。'
+  },
+  {
+    type: 'dialog',
+    speaker: '阿哲',
+    text: '欸，你今天這件衣服很好看。',
+    bg: 'images/part2/Praise.png'
+  },
+  {
+    type: 'narrate',
+    text: '小瑀沒有接話，繼續看電腦。'
+  },
+  {
+    type: 'dialog',
+    speaker: '阿哲',
+    text: '我是說真的，你每次都穿得很好看。'
+  },
+  {
+    type: 'dialog',
+    speaker: '小瑀',
+    text: '謝謝。'
+  },
+  {
+    type: 'narrate',
+    text: '她的聲音很平。\n眼睛沒有離開螢幕。'
+  },
+  {
+    type: 'narrate',
+    text: '隔了幾分鐘。',
+    bg: 'images/part2/Love.png'
+  },
+  {
+    type: 'dialog',
+    speaker: '阿哲',
+    text: '你有沒有喜歡過我？'
+  },
+  {
+    type: 'narrate',
+    text: '教室裡很安靜。\n你聽到了，假裝繼續在看自己的筆記。'
+  },
+  {
+    type: 'narrate',
+    text: '小瑀尷尬笑了一下。'
+  },
+  {
+    type: 'dialog',
+    speaker: '小瑀',
+    text: '我們是同學啊。'
+  },
+  {
+    type: 'dialog',
+    speaker: '阿哲',
+    text: '同學也可以喜歡。那我繼續等你喔。'
+  },
+  {
+    type: 'narrate',
+    text: '小瑀沒有再說話。\n她低頭翻了一頁筆記，翻得很快。',
+    bg: 'images/part2/Quiet.png'
+  },
+  {
+    type: 'narrate',
+    text: '那之後，小瑀幾乎沒怎麼說話。'
+  },
+  {
+    type: 'narrate',
+    text: '你們收拾東西離開時，她走得比平常快。',
+    bg: 'images/part2/Leaving.png'
+  },
+  {
+    type: 'narrate',
+    text: '那天晚上，你看到阿哲在系群傳了一個梗圖。\n有點曖昧的那種。',
+    bg: 'images/part2/Message.png'
+  },
+  {
+    type: 'narrate',
+    text: '底下還留言說：'
+  },
+  {
+    type: 'dialog',
+    speaker: '阿哲',
+    text: '這讓我想到小瑀 哈哈'
+  },
+  {
+    type: 'narrate',
+    text: '小瑀沒有回應。'
+  },
+  {
+    type: 'narrate',
+    text: '你當時在現場，也看到了晚上的群組訊息。\n你覺得有哪裡不對。'
+  },
+  {
+    type: 'narrate',
+    text: '但你開始分不清。\n哪些只是普通互動，哪些已經讓人不舒服。',
+  },
+  {
+    type: 'linePuzzle'
+  },
+];
+
+const choiceResults = {
+  A: [
+    {
+      type: 'narrate',
+      text: '你想了一下，還是打開手機，私訊了小瑀。',
+      bg: 'images/part2/Asking.png'
+    },
+    {
+      type: 'dialog',
+      speaker: '你',
+      text: '你還好嗎？今天那些話你聽了感覺怎樣？'
+    },
+    {
+      type: 'narrate',
+      text: '小瑀過了很久才回。',
+      bg: 'images/part2/Chat.png'
+    },
+    {
+      type: 'dialog',
+      speaker: '小瑀',
+      text: '還好啦，只是有點煩。'
+    },
+    {
+      type: 'dialog',
+      speaker: '你',
+      text: '他一直這樣嗎？'
+    },
+    {
+      type: 'dialog',
+      speaker: '小瑀',
+      text: '最近比較多。'
+    },
+    {
+      type: 'dialog',
+      speaker: '小瑀',
+      text: '但也不知道要怎樣，大家都認識。'
+    },
+    {
+      type: 'dialog',
+      speaker: '你',
+      text: '如果你想聊，或是想知道有哪些資源，可以告訴我。'
+    },
+    {
+      type: 'dialog',
+      speaker: '小瑀',
+      text: '好，謝謝你。',
+      bg: 'images/part2/aLast.png'
+    },
+    {
+      type: 'narrate',
+      text: '你讓她知道，有人看見她的感受。\n她還沒準備好，但她知道你在。'
+    }
+  ],
+
+  B: [
+    {
+      type: 'narrate',
+      text: '你看著群組裡的訊息，猶豫了一下。',
+      bg: 'images/part2/GroupMessage.png',
+      bg: 'images/part2/bChat.png'
+    },
+    {
+      type: 'dialog',
+      speaker: '你',
+      text: '哈哈'
+    },
+    {
+      type: 'narrate',
+      text: '小瑀看到你的哈哈，沉默了。',
+      bg: 'images/part2/Mute.png'
+    },
+    {
+      type: 'narrate',
+      text: '她把手機放下。'
+    },
+    {
+      type: 'dialog',
+      speaker: '小瑀',
+      text: '連他也覺得沒什麼嗎？'
+    },
+    {
+      type: 'narrate',
+      text: '那天晚上，她把阿哲設成靜音。\n沒有告訴任何人。'
+    }
+  ],
+
+  C: [
+    {
+      type: 'narrate',
+      text: '你想了想，決定私訊阿哲。',
+      bg: 'images/part2/cChat.png'
+    },
+    {
+      type: 'dialog',
+      speaker: '你',
+      text: '欸你那個訊息感覺有點奇怪，她可能不喜歡。'
+    },
+    {
+      type: 'dialog',
+      speaker: '阿哲',
+      text: '我只是開玩笑啦，她又不會怎樣。'
+    },
+    {
+      type: 'narrate',
+      text: '你不知道怎麼繼續說。'
+    },
+    {
+      type: 'narrate',
+      text: '小瑀不知道你去說了這件事。',
+      bg: 'images/part2/cLast.png'
+    },
+    {
+      type: 'narrate',
+      text: '她有點不知道怎麼面對你們兩個。'
+    }
+  ]
+};
+
+const angelText = `
+「你有沒有喜歡過我？」
+
+這句話在一個不對等的情境裡，
+比你想的更有重量。
+
+小瑀笑著說「我們是同學啊」，
+不是因為她覺得沒關係——
+而是因為她不知道怎麼說：
+「我不喜歡你，請你停下來。」
+
+她沒有通報，
+不是因為這件事不重要。
+
+而是她也在問自己：
+「這樣算嚴重嗎？」
+「說出去大家會怎麼想？」
+「以後還要一起做實驗……」
+
+很多人都這樣問過自己。
+`;
+
+const knowledgeCards = [
+  {
+    title: '語言性騷擾',
+    content:
+    '帶有性意涵的評論、持續追求、讓對方感到不舒服的追問，都可能構成語言性騷擾。'
+  },
+
+  {
+    title: '數位性騷擾',
+    content:
+    '在社群平台或群組中，傳送具性意涵、曖昧暗示或讓特定對象感到壓力的訊息與圖片，也可能造成傷害。'
+  },
+
+  {
+    title: '不通報的常見原因',
+    content:
+    '很多人不通報，不是因為沒事，而是因為關係顧忌、自我懷疑「這樣算嗎」、不知道求助管道，或擔心影響未來。'
+  }
+];
+
+
+const lineAnalysis = [
+
+  {
+    id: 'msg2',
+    text: `
+    單次稱讚未必是騷擾。<br><br>
+
+    但如果對方沒有回應，
+    卻持續被評論外貌，
+    就可能慢慢形成壓力。
+    `
+  },
+
+  {
+    id: 'msg3',
+    text: `
+    當對方已經明顯尷尬、
+    迴避、沉默時，<br><br>
+
+    持續表達感情，
+    可能會讓人感到壓迫。
+    `
+  },
+
+  {
+    id: 'msg4',
+    text: `
+    把曖昧暗示公開放進群組裡，<br><br>
+
+    可能讓當事人感到：
+    自己正在被別人注視、
+    被討論。
+    `
+  },
+
+  {
+    id: 'msg5',
+    text: `
+    一次邀約未必構成騷擾。<br><br>
+
+    但如果對方已經開始迴避，
+    仍持續邀約，
+    就可能形成壓力。
+    `
+  }
+];
+let lineAnalysisIndex = 0;
+let nextMode = '';
+let current = 0;
+let isChoosing = false;
+let resultLines = [];
+let resultIndex = 0;
+let knowledgeIndex = 0;
+
+function startGame() {
+  const cin = document.getElementById('cinematic');
+  const game = document.getElementById('game');
+
+  cin.style.transition = 'opacity 0.6s ease';
+  cin.style.opacity = '0';
+
+  setTimeout(() => {
+    cin.style.display = 'none';
+    game.classList.add('visible');
+    renderLine(0);
+  }, 600);
+}
+
+function renderLine(index) {
+  const line = lines[index];
+
+  if (line.type === 'linePuzzle') {
+
+  document.getElementById('line-puzzle').style.display = 'flex';
+  return;
+}
+
+  if (line.bg) {
+    document.getElementById('game-bg').style.backgroundImage = `url('${line.bg}')`;
+  }
+
+  const speakerEl = document.getElementById('speaker-name');
+
+  if (line.type === 'narrate') {
+    speakerEl.textContent = '旁白';
+    speakerEl.className = 'speaker-name narrator';
+  } else {
+    speakerEl.textContent = line.speaker;
+        if (line.speaker === '阿哲') {
+        speakerEl.className = 'speaker-name azhe';
+        }
+        else if (line.speaker === '小瑀') {
+        speakerEl.className = 'speaker-name xiaoyu';
+        }
+        else {
+        speakerEl.className = 'speaker-name';
+        }
+  }
+
+  document.getElementById('dialog-text').innerHTML =
+    line.text.replace(/\n/g, '<br>');
+}
+
+function nextLine() {
+  if (isChoosing) return;
+
+  if (resultLines.length > 0) {
+    if (resultIndex < resultLines.length - 1) {
+      resultIndex++;
+      renderLineFromObject(resultLines[resultIndex]);
+    } else {
+      if (nextMode === 'nightChoice') {
+
+        showNightChoices();
+
+      }
+      else if (nextMode === 'mainChoice') {
+
+        showChoices();
+
+      }
+      else {
+
+        showAngel();
+
+      }
+    }
+    return;
+  }
+
+  if (current < lines.length - 1) {
+    current++;
+    renderLine(current);
+  } else {
+    showChoices();
+  }
+}
+
+function showChoices() {
+  isChoosing = true;
+  resultLines = [];
+  nextMode = '';
+
+  document.getElementById('choice-area').innerHTML = `
+    <button onclick="chooseOption('A')">
+      A. 私訊小瑀：「你還好嗎？今天那些話你聽了感覺怎樣？」
+    </button>
+
+    <button onclick="chooseOption('B')">
+      B. 在群組裡回一個「哈哈」，帶過去，覺得不關自己的事
+    </button>
+
+    <button onclick="chooseOption('C')">
+      C. 私訊阿哲：「欸你那個訊息感覺有點奇怪，她可能不喜歡」
+    </button>
+  `;
+
+  document.getElementById('choice-area').classList.remove('hidden');
+  document.querySelector('.game-dialog').classList.add('dim');
+}
+
+function chooseOption(option) {
+  localStorage.setItem('chapter2Choice', option);
+  isChoosing = false;
+  document.getElementById('choice-area').classList.add('hidden');
+  document.querySelector('.game-dialog').classList.remove('dim');
+
+  resultLines = choiceResults[option];
+  resultIndex = 0;
+
+  renderLineFromObject(resultLines[resultIndex]);
+}
+
+function renderLineFromObject(line) {
+  if (line.bg) {
+    document.getElementById('game-bg').style.backgroundImage = `url('${line.bg}')`;
+  }
+
+  const speakerEl = document.getElementById('speaker-name');
+
+  if (line.type === 'narrate') {
+    speakerEl.textContent = '旁白';
+    speakerEl.className = 'speaker-name narrator';
+  } else {
+    speakerEl.textContent = line.speaker;
+        if (line.speaker === '阿哲') {
+        speakerEl.className = 'speaker-name azhe';
+        }
+        else if (line.speaker === '小瑀') {
+        speakerEl.className = 'speaker-name xiaoyu';
+        }
+        else {
+        speakerEl.className = 'speaker-name';
+        }
+  }
+
+  document.getElementById('dialog-text').innerHTML =
+    line.text.replace(/\n/g, '<br>');
+}
+function showAngel() {
+  document.getElementById('angel-screen').classList.remove('hidden');
+
+  document.getElementById('angel-text').innerHTML =
+    angelText.replace(/\n/g, '<br>');
+}
+
+function goKnowledgeCard() {
+
+  document.getElementById('angel-screen')
+    .classList.add('hidden');
+
+  document.getElementById('knowledge-screen')
+    .classList.remove('hidden');
+
+  renderKnowledgeCard();
+}
+
+function renderKnowledgeCard() {
+  const card = knowledgeCards[knowledgeIndex];
+  const cardBox = document.querySelector('.knowledge-card');
+
+  cardBox.style.animation = 'none';
+  cardBox.offsetHeight;
+  cardBox.style.animation = 'cardFadeIn 0.45s ease both';
+
+  document.querySelector('.knowledge-title').innerHTML = card.title;
+
+  document.getElementById('knowledge-content').innerHTML = card.content;
+}
+
+function nextKnowledgeCard() {
+
+  if (knowledgeIndex < knowledgeCards.length - 1) {
+
+    knowledgeIndex++;
+
+    renderKnowledgeCard();
+
+    if (knowledgeIndex === knowledgeCards.length - 1) {
+
+      document.querySelector('.knowledge-button')
+        .innerHTML = '進入下一章 →';
+    }
+
+  } else {
+
+    goNextChapter();
+
+  }
+}
+
+function startLineAnalysis() {
+  const checked = document.querySelectorAll('.line-msg input:checked');
+  if (checked.length === 0) {
+    alert('請先選出你認為可能讓小瑀感到壓力的訊息。');
+    return;
+  }
+  
+  lineAnalysisIndex = 0;
+  document.getElementById('line-start-btn').classList.add('hidden');
+  document.getElementById('line-next-btn').classList.remove('hidden');
+  showCurrentLineAnalysis();
+}
+function showCurrentLineAnalysis() {
+  const item = lineAnalysis[lineAnalysisIndex];
+
+  document.querySelectorAll('.line-msg')
+    .forEach(msg => msg.classList.remove('active'));
+
+  document.getElementById(item.id).classList.add('active');
+
+  const feedback = document.getElementById('line-feedback');
+  feedback.classList.remove('hidden');
+  feedback.innerHTML = item.text;
+
+  if (lineAnalysisIndex === lineAnalysis.length - 1) {
+    document.getElementById('line-next-btn').classList.add('hidden');
+    document.getElementById('line-finish-btn').classList.remove('hidden');
+  }
+}
+
+function nextLineAnalysis() {
+  if (lineAnalysisIndex < lineAnalysis.length - 1) {
+    lineAnalysisIndex++;
+    showCurrentLineAnalysis();
+  }
+}
+
+function finishLinePuzzle() {
+  document.getElementById('line-puzzle').style.display = 'none';
+  showNightChoice();
+}
+function showNightChoice() {
+
+  const nightLines = [
+
+    {
+      type: 'narrate',
+      text: '你把手機收進口袋。\n夜晚的風有點涼。',
+      bg: 'images/part2/NightStreet.png'
+    },
+
+    {
+      type: 'narrate',
+      text: '你走出宵夜街時，看見小瑀一個人站在紅燈前。'
+    },
+
+    {
+      type: 'narrate',
+      text: '你走上前。\n有什麼話想說，但你不確定該不該開口。'
+    }
+
+  ];
+
+  resultLines = nightLines;
+
+  resultIndex = 0;
+
+  renderLineFromObject(resultLines[0]);
+
+  nextMode = 'nightChoice';
+}
+
+const nightChoiceResults = {
+
+  A: [
+
+    {
+      type: 'dialog',
+      speaker: '你',
+      text: '阿哲今天問的那句話……你還好嗎？',
+      bg: 'images/part2/RedLight.png'
+    },
+
+    {
+      type: 'narrate',
+      text: '小瑀沉默了幾秒。'
+    },
+
+    {
+      type: 'dialog',
+      speaker: '小瑀',
+      text: '還好。只是……有點煩。'
+    },
+
+    {
+      type: 'dialog',
+      speaker: '小瑀',
+      text: '謝謝你問。'
+    },
+        {
+      type: 'narrate',
+      text: '紅燈變綠了。\n你和小瑀一起走過路口。'
+    },
+    {
+      type: 'narrate',
+      text: '一路上，她沒有再多說什麼。'
+    },
+    {
+      type: 'narrate',
+      text: '回到宿舍後，你又打開手機。\n群組裡那張梗圖還停在畫面上。',
+      bg: 'images/part2/Message.png'
+    },
+    {
+      type: 'narrate',
+      text: '你想起剛剛小瑀的表情。\n也想起教室裡，她低頭沉默的樣子。'
+    },
+    {
+      type: 'narrate',
+      text: '這一次，你不太能說服自己「那只是玩笑」。\n你會怎麼做？'
+    }
+  ],
+
+  B: [
+
+    {
+      type: 'dialog',
+      speaker: '你',
+      text: '今晚吃得不錯，對吧。',
+      bg: 'images/part2/RedLight.png'
+    },
+
+    {
+      type: 'dialog',
+      speaker: '小瑀',
+      text: '嗯。'
+    },
+
+    {
+      type: 'narrate',
+      text: '你們都沒有再說話。\n只是一起等著紅燈變綠。'
+    },
+    {
+      type: 'narrate',
+      text: '紅燈變綠了。\n你和小瑀一起走過路口。'
+    },
+    {
+      type: 'narrate',
+      text: '一路上，她沒有再多說什麼。'
+    },
+    {
+      type: 'narrate',
+      text: '回到宿舍後，你又打開手機。\n群組裡那張梗圖還停在畫面上。',
+      bg: 'images/part2/Message.png'
+    },
+    {
+      type: 'narrate',
+      text: '你想起剛剛小瑀的表情。\n也想起教室裡，她低頭沉默的樣子。'
+    },
+    {
+      type: 'narrate',
+      text: '這一次，你不太能說服自己「那只是玩笑」。\n你會怎麼做？'
+    }
+  ],
+
+  C: [
+
+    {
+      type: 'dialog',
+      speaker: '你',
+      text: '我覺得阿哲那樣問你有點奇怪。',
+      bg: 'images/part2/RedLight.png'
+    },
+
+    {
+      type: 'narrate',
+      text: '小瑀愣了一下。'
+    },
+
+    {
+      type: 'dialog',
+      speaker: '小瑀',
+      text: '不用啦……不要去說。'
+    },
+
+    {
+      type: 'dialog',
+      speaker: '小瑀',
+      text: '這樣只會更奇怪。'
+    },
+    {
+    type: 'narrate',
+    text: '紅燈變綠了。\n你和小瑀一起走過路口。'
+    },
+    {
+      type: 'narrate',
+      text: '一路上，她沒有再多說什麼。'
+    },
+    {
+      type: 'narrate',
+      text: '回到宿舍後，你又打開手機。\n群組裡那張梗圖還停在畫面上。',
+      bg: 'images/part2/Message.png'
+    },
+    {
+      type: 'narrate',
+      text: '你想起剛剛小瑀的表情。\n也想起教室裡，她低頭沉默的樣子。'
+    },
+    {
+      type: 'narrate',
+      text: '這一次，你不太能說服自己「那只是玩笑」。\n你會怎麼做？'
+    }
+  ]
+};
+
+function showNightChoices() {
+  isChoosing = true;
+  resultLines = [];
+
+  document.getElementById('choice-area').innerHTML = `
+    <button onclick="nightChoice('A')">
+      A. 「阿哲今天問的那句話……你還好嗎？」
+    </button>
+
+    <button onclick="nightChoice('B')">
+      B. 「今晚吃得不錯，對吧。」
+    </button>
+
+    <button onclick="nightChoice('C')">
+      C. 「我覺得阿哲那樣問你有點奇怪。」
+    </button>
+  `;
+
+  document.getElementById('choice-area').classList.remove('hidden');
+  document.querySelector('.game-dialog').classList.add('dim');
+}
+function nightChoice(option) {
+  isChoosing = false;
+  localStorage.setItem('nightRoadChoice', option);
+  document.getElementById('choice-area').classList.add('hidden');
+  document.querySelector('.game-dialog').classList.remove('dim');
+
+  resultLines = nightChoiceResults[option];
+  resultIndex = 0;
+  nextMode = 'mainChoice';
+
+  renderLineFromObject(resultLines[0]);
+}
+
+function goNextChapter() {
+  window.location.href = 'chapter3.html';
+}
+
+</script>
+
+</body>
+</html>

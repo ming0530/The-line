@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>那條線｜第三章</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Noto+Serif+TC:wght@300;400;600&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/game.css">
+</head>
+
+<body>
+
+<div id="cinematic" onclick="startGame()">
+  <div class="cin-line"></div>
+  <div class="cin-text">那條線｜第三章</div>
+  <div class="cin-line"></div>
+    <div class="cin-text">某個週四晚上</div>
+  <div class="cin-hint">▼</div>
+</div>
+
+<div id="game">
+  <div class="game-bg" id="game-bg"></div>
+
+  <div class="game-topbar">
+    <div class="chapter-label" id="chapter-label">第三章</div>
+  </div>
+
+  <div class="game-dialog" onclick="nextLine()">
+    <div class="speaker-name narrator" id="speaker-name">旁白</div>
+
+    <div class="dialog-box">
+      <div class="dialog-text" id="dialog-text"></div>
+      <div class="click-hint">▼ 點擊繼續</div>
+    </div>
+  </div>
+  <div class="choice-area hidden" id="choice-area">
+  <button onclick="chooseOption('A')">
+    A. 發訊息給小瑀：「我在樓下，你還好嗎？今晚那些我都看到了。」
+  </button>
+
+  <button onclick="chooseOption('B')">
+    B. 覺得她已經進宿舍了，應該沒事，先回去
+  </button>
+
+  <button onclick="chooseOption('C')">
+    C. 直接去找阿哲，告訴他「你今天那樣不對」
+  </button>
+</div>
+</div>
+</div>
+
+<div class="angel-screen hidden" id="angel-screen" onclick="goKnowledgeCard()">
+  <div class="angel-title">法官小天使</div>
+    <div class="real-photo">
+  <img src="images/part3/realbusstop.jpg">
+  </div>
+  <div class="angel-text" id="angel-text"></div>
+
+  <div class="angel-hint">▼ 點擊繼續</div>
+</div>
+
+<div class="knowledge-screen hidden" id="knowledge-screen">
+
+  <div class="knowledge-card">
+
+    <div class="knowledge-label">
+      知識卡
+    </div>
+
+    <div class="knowledge-title">
+    </div>
+
+    <div class="knowledge-content" id="knowledge-content">
+    </div>
+
+    <div class="knowledge-button" onclick="nextKnowledgeCard()">
+    下一張 →
+    </div>
+  </div>
+</div>
+<!-- chapter3 -->
+<audio id="bgm" src="music/chapter3.mp3" loop></audio>
+<button class="music-btn" id="music-btn" onclick="toggleMusic()">♪</button>
+<script>
+const bgm = document.getElementById('bgm');
+const btn = document.getElementById('music-btn');
+let muted = false;
+
+document.addEventListener('click', () => {
+  if (bgm.paused) bgm.play();
+}, { once: true });
+
+function toggleMusic() {
+  muted = !muted;
+  bgm.muted = muted;
+  btn.style.opacity = muted ? '0.4' : '1';
+}
+</script>
+
+<script>
+
+const lines = [
+  {
+  type: 'narrate',
+  text: '你站在夜晚的校園裡。\n你想起這三個月。',
+  bg: 'images/part3/map_timeline.png'
+  },
+  {
+    type: 'narrate',
+    text: '第一個標記停在理工大樓。',
+  },
+  {
+    type: 'narrate',
+    text: '三個月前，實驗室，她說了我可以自己來。'
+  },
+  {
+    type: 'narrate',
+    text: '第二個標記停在宵夜街。',
+  },
+  {
+    type: 'narrate',
+    text: '上週，群組訊息。她沒有回應。'
+  },
+  {
+    type: 'narrate',
+    text: '第三個標記，沿著公車路線一路往宿舍延伸。',
+  },
+  {
+    type: 'narrate',
+    text: '你忽然發現。\n這不是三個獨立的事件。',
+  },
+  {
+    type: 'narrate',
+    text: '它像一條線。\n一直往前。',
+  },
+  {
+    type: 'narrate',
+    text: '那之後，小瑀在實驗室越來越少說話。',
+    bg: 'images/part3/lessTalk.png'
+  },
+  {
+    type: 'narrate',
+    text: '有時候你問她怎麼了，她說：「沒事，最近比較累」。'
+  },
+  {
+    type: 'narrate',
+    text: '你說好。\n但你知道不只是這樣。'
+  },
+  {
+    type: 'narrate',
+    text: '阿哲還是每天在群組裡傳訊息，還是叫她一起去吃飯。',
+    bg: 'images/part3/Asking.png'
+  },
+    {
+    type: 'narrate',
+    text: '她越來越常說「不用了」。'
+  },
+  {
+    type: 'narrate',
+    text: '這件事沒有停。'
+  },
+  {
+    type: 'narrate',
+    text: '某個週四晚上，你在圖書館待到很晚，正要回宿舍。',
+    bg: 'images/part3/Library_Night.png'
+  },
+  {
+    type: 'narrate',
+    text: '走到公車站，你看到小瑀一個人站在那裡。\n阿哲從後面走過來，站到她旁邊。',
+    bg: 'images/part3/Bus_Stop.png'
+  },
+  {
+    type: 'dialog',
+    speaker: '阿哲',
+    text: '你也在等車啊，我送你回去。'
+  },
+  {
+    type: 'dialog',
+    speaker: '小瑀',
+    text: '不用，我自己可以。'
+  },
+  {
+    type: 'dialog',
+    speaker: '阿哲',
+    text: '沒關係，順路。'
+  },
+  {
+    type: 'narrate',
+    text: '公車來了。\n你也上車了，坐在稍微遠一點的位置，可以看到他們。',
+    bg: 'images/part3/Bus_Inside.png'
+  },
+  {
+    type: 'narrate',
+    text: '車上很擠。\n阿哲站在小瑀旁邊，藉著人潮讓身體靠著她。'
+  },
+  {
+    type: 'narrate',
+    text: '小瑀往旁邊移了一步。\n阿哲跟著移。'
+  },
+  {
+    type: 'narrate',
+    text: '她背靠著車廂側壁，沒有地方再退。'
+  },
+  {
+    type: 'busChoice',
+    text: '你看到了。\n阿哲每次小瑀往旁邊移，他就跟著。\n她已經沒有地方退了。\n還有三站。\n你可以做什麼？'
+  },
+  {
+    type: 'narrate',
+    text: '下車之後，阿哲還是跟著小瑀走。\n你跟在後面，保持距離。',
+    bg: 'images/part3/Dorm_Walk.png'
+  },
+  {
+    type: 'dialog',
+    speaker: '阿哲',
+    text: '你讓我進去坐一下嗎？'
+  },
+  {
+    type: 'dialog',
+    speaker: '小瑀',
+    text: '不行，我很累了。'
+  },
+  {
+    type: 'narrate',
+    text: '她刷門進去，門關上了。',
+    bg: 'images/part3/Dorm_Gate.png'
+  },
+  {
+    type: 'narrate',
+    text: '阿哲站在宿舍門口站了一下，才離開。'
+  },
+  {
+    type: 'narrate',
+    text: '你站在旁邊，看著這一切。'
+  },
+  {
+    type: 'narrate',
+    text: '你知道這次跟前兩次不一樣了。你會怎麼做？'
+  }
+];
+
+const nightRoadChoice = localStorage.getItem('nightRoadChoice');
+
+function getXiaoyuBusReaction() {
+  if (nightRoadChoice === 'A') {
+    return {
+      type: 'dialog',
+      speaker: '小瑀',
+      text: '……幸好你在。'
+    };
+  }
+
+  if (nightRoadChoice === 'C') {
+    return {
+      type: 'narrate',
+      text: '小瑀看到你時，眼神有一點猶豫。'
+    };
+  }
+
+  if (nightRoadChoice === 'B') {
+    return {
+      type: 'narrate',
+      text: '小瑀看到你也在，但什麼都沒有說。'
+    };
+  }
+
+  return {
+    type: 'narrate',
+    text: '小瑀看到你也在，但什麼都沒有說。'
+  };
+}
+
+const busChoiceResults = {
+  A: [
+    {
+      type: 'dialog',
+      speaker: '你',
+      text: '欸小瑀，你也在！'
+    },
+    {
+      type: 'narrate',
+      text: '小瑀抬頭看了你一眼。'
+    },
+    getXiaoyuBusReaction(),
+    {
+      type: 'narrate',
+      text: '阿哲停了一下，往旁邊退開。'
+    },
+    {
+      type: 'narrate',
+      text: '你打斷了這個情境。\n這是很有效的介入方式之一。\n不一定要正面衝突，只要讓空間裡不再只剩下他們兩個人，情勢就會改變。'
+    }
+  ],
+
+  B: [
+    {
+      type: 'narrate',
+      text: '你站起來，慢慢走到小瑀旁邊。'
+    },
+    getXiaoyuBusReaction(),
+    {
+      type: 'narrate',
+      text: '你沒有說話，只是站在她身側。'
+    },
+    {
+      type: 'narrate',
+      text: '小瑀的肩膀像是放鬆了一點。'
+    },
+    {
+      type: 'narrate',
+      text: '你移動了過去。\n小瑀感覺到你的存在。\n這也是介入——低調，但有效。\n有時候陪在旁邊，就是在幫對方重新拿回一點空間。'
+    }
+  ],
+
+  C: [
+    {
+      type: 'narrate',
+      text: '你繼續站在原位。'
+    },
+    {
+      type: 'narrate',
+      text: '你想著，也許再等等就沒事了。'
+    },
+    {
+      type: 'narrate',
+      text: '但那三站，小瑀一個人貼著車廂壁。'
+    },
+    {
+      type: 'narrate',
+      text: '你沒有移動。\n也許你不確定該怎麼做。\n但旁觀者的沉默，常常會讓被壓迫的人覺得自己只能忍耐。'
+    }
+  ]
+};
+
+const choiceResults = {
+
+  A: [
+    {
+      type: 'narrate',
+      text: '你站在宿舍樓下，猶豫了一下，還是傳了訊息。',
+      bg: 'images/part3/Message_Xiaoyu.png'
+    },
+
+    {
+      type: 'dialog',
+      speaker: '你',
+      text: '我在樓下，你還好嗎？今晚那些我都看到了。'
+    },
+
+    {
+      type: 'narrate',
+      text: '過了幾分鐘。\n宿舍門打開了。'
+    },
+
+    {
+      type: 'dialog',
+      speaker: '小瑀',
+      text: '謝謝你來問。',
+      bg: 'images/part3/Happy.png'
+    },
+
+    {
+      type: 'narrate',
+      text: '她停了一下。'
+    },
+
+    {
+      type: 'dialog',
+      speaker: '小瑀',
+      text: '我想去跟諮商中心談談。'
+    },
+
+    {
+      type: 'dialog',
+      speaker: '小瑀',
+      text: '但我不知道要怎麼說，也不知道這樣夠不夠資格去。'
+    },
+
+    {
+      type: 'dialog',
+      speaker: '你',
+      text: '你當然有資格去。\n我可以陪你去。'
+    },
+
+    {
+      type: 'narrate',
+      text: '她點了點頭。',
+      bg: 'images/part3/Nod.png'
+    }
+  ],
+
+  B: [
+    {
+      type: 'narrate',
+      text: '你看著宿舍門關上。'
+    },
+
+    {
+      type: 'narrate',
+      text: '最後還是轉身離開了。'
+    },
+
+    {
+      type: 'narrate',
+      text: '那天晚上，小瑀一個人待在宿舍裡很久。',
+      bg: 'images/part3/Alone.png'
+    },
+
+    {
+      type: 'narrate',
+      text: '她不確定今晚算不算「嚴重」。'
+    },
+
+    {
+      type: 'narrate',
+      text: '也不確定有沒有人願意聽她說。'
+    },
+
+    {
+      type: 'narrate',
+      text: '她打開諮商中心的網頁，看了很久。'
+    },
+
+    {
+      type: 'narrate',
+      text: '最後還是關掉了。\n她還是一個人。'
+    }
+  ],
+
+  C: [
+    {
+      type: 'narrate',
+      text: '你追上了阿哲。',
+      bg: 'images/part3/Talk_Azhe.png'
+    },
+
+    {
+      type: 'dialog',
+      speaker: '你',
+      text: '你今天那樣不對。'
+    },
+
+    {
+      type: 'dialog',
+      speaker: '阿哲',
+      text: '她沒說什麼啊。'
+    },
+
+    {
+      type: 'dialog',
+      speaker: '阿哲',
+      text: '而且她又沒怎樣。'
+    },
+
+    {
+      type: 'dialog',
+      speaker: '你',
+      text: '她有說不行了。'
+    },
+
+    {
+      type: 'narrate',
+      text: '阿哲沉默了一下。'
+    },
+
+    {
+      type: 'narrate',
+      text: '你不知道他有沒有真的聽進去。'
+    },
+
+    {
+      type: 'narrate',
+      text: '你不知道是否知道小瑀這件事。'
+    },
+
+    {
+      type: 'narrate',
+      text: '她或許還是一個人待在宿舍裡，想著今晚到底算什麼。'
+    }
+  ]
+
+};
+
+const angelText = `
+她說了「不用」，
+他還是跟上去了。
+
+她往旁邊移，
+他跟著移。
+
+她說了「不行」，
+他還是在門口站著。
+
+這不是熱情。
+
+這是跟蹤，
+是不顧對方意願的持續接近。
+
+喜歡一個人，
+不是讓對方在公車上無處可退。
+`;
+
+const knowledgeCards = [
+
+  {
+    title: '跟蹤騷擾',
+    content:
+    '反覆跟隨、無視拒絕、在對方不願意的情況下持續接近，都可能構成跟蹤騷擾。'
+  },
+
+  {
+    title: '公共場所肢體騷擾',
+    content:
+    '在擁擠場合故意靠近、摩擦、利用環境限制對方移動空間，也可能造成傷害。'
+  },
+
+  {
+    title: '通報是一個選擇, 不是義務',
+    content:
+    '不是每個人都能立刻通報。\n但知道有哪些資源、可以怎麼做、有人願意陪伴，會讓人不那麼孤單。'
+  }
+
+];
+let current = 0;
+let isChoosing = false;
+let resultLines = [];
+let resultIndex = 0;
+let resultMode = '';
+let knowledgeIndex = 0;
+
+function startGame() {
+  const cin = document.getElementById('cinematic');
+  const game = document.getElementById('game');
+
+  cin.style.transition = 'opacity 0.6s ease';
+  cin.style.opacity = '0';
+
+  setTimeout(() => {
+    cin.style.display = 'none';
+    game.classList.add('visible');
+    renderLine(0);
+  }, 600);
+}
+
+function renderLine(index) {
+  const line = lines[index];
+
+  if (line.bg) {
+    document.getElementById('game-bg').style.backgroundImage = `url('${line.bg}')`;
+  }
+
+  const speakerEl = document.getElementById('speaker-name');
+
+  if (line.type === 'narrate') {
+    speakerEl.textContent = '旁白';
+    speakerEl.className = 'speaker-name narrator';
+  } else {
+    speakerEl.textContent = line.speaker;
+        if (line.speaker === '阿哲') {
+        speakerEl.className = 'speaker-name azhe';
+        }
+        else if (line.speaker === '小瑀') {
+        speakerEl.className = 'speaker-name xiaoyu';
+        }
+        else {
+        speakerEl.className = 'speaker-name';
+        }
+  }
+
+  document.getElementById('dialog-text').innerHTML =
+    line.text.replace(/\n/g, '<br>');
+}
+
+function nextLine() {
+  if (isChoosing) return;
+
+  if (resultLines.length > 0) {
+    if (resultIndex < resultLines.length - 1) {
+      resultIndex++;
+      renderLineFromObject(resultLines[resultIndex]);
+    } else {
+      if (resultMode === 'bus') {
+        resultLines = [];
+        resultIndex = 0;
+        resultMode = '';
+
+        current++;
+        renderLine(current);
+      } else {
+        showAngel();
+      }
+    }
+    return;
+  }
+
+  if (current < lines.length - 1) {
+    current++;
+
+    if (lines[current].type === 'busChoice') {
+      showBusChoices(lines[current].text);
+    } else {
+      renderLine(current);
+    }
+
+  } else {
+    showChoices();
+  }
+}
+
+function showChoices() {
+  isChoosing = true;
+
+  document.getElementById('choice-area').innerHTML = `
+    <button onclick="chooseOption('A')">
+      A. 發訊息給小瑀：「我在樓下，你還好嗎？今晚那些我都看到了。」
+    </button>
+
+    <button onclick="chooseOption('B')">
+      B. 覺得她已經進宿舍了，應該沒事，先回去
+    </button>
+
+    <button onclick="chooseOption('C')">
+      C. 直接去找阿哲，告訴他「你今天那樣不對」
+    </button>
+  `;
+
+  document.getElementById('choice-area').classList.remove('hidden');
+  document.querySelector('.game-dialog').classList.add('dim');
+}
+
+function showBusChoices(questionText) {
+  isChoosing = true;
+
+  document.getElementById('dialog-text').innerHTML =
+    questionText.replace(/\n/g, '<br>');
+
+  document.getElementById('speaker-name').textContent = '旁白';
+  document.getElementById('speaker-name').className = 'speaker-name narrator';
+
+  document.getElementById('choice-area').innerHTML = `
+    <button onclick="chooseBusOption('A')">
+      A. 走過去，假裝剛看到她，說「欸小瑀，你也在！」
+    </button>
+
+    <button onclick="chooseBusOption('B')">
+      B. 自然地走到小瑀旁邊站著，不說話，製造距離
+    </button>
+
+    <button onclick="chooseBusOption('C')">
+      C. 繼續站在原位，等等看
+    </button>
+  `;
+
+  document.getElementById('choice-area').classList.remove('hidden');
+  document.querySelector('.game-dialog').classList.add('dim');
+}
+
+function chooseBusOption(option) {
+  localStorage.setItem('busChoice', option);
+
+  isChoosing = false;
+  resultMode = 'bus';
+
+  document.getElementById('choice-area').classList.add('hidden');
+  document.querySelector('.game-dialog').classList.remove('dim');
+
+  resultLines = busChoiceResults[option];
+  resultIndex = 0;
+
+  renderLineFromObject(resultLines[resultIndex]);
+}
+
+function chooseOption(option) {
+  localStorage.setItem('chapter3Choice', option);
+  isChoosing = false;
+  document.getElementById('choice-area').classList.add('hidden');
+  document.querySelector('.game-dialog').classList.remove('dim');
+
+ resultMode = 'final';
+  resultLines = choiceResults[option];
+  resultIndex = 0;
+
+  renderLineFromObject(resultLines[resultIndex]);
+}
+
+function renderLineFromObject(line) {
+  if (line.bg) {
+    document.getElementById('game-bg').style.backgroundImage = `url('${line.bg}')`;
+  }
+
+  const speakerEl = document.getElementById('speaker-name');
+
+  if (line.type === 'narrate') {
+    speakerEl.textContent = '旁白';
+    speakerEl.className = 'speaker-name narrator';
+  } else {
+    speakerEl.textContent = line.speaker;
+        if (line.speaker === '阿哲') {
+        speakerEl.className = 'speaker-name azhe';
+        }
+        else if (line.speaker === '小瑀') {
+        speakerEl.className = 'speaker-name xiaoyu';
+        }
+        else {
+        speakerEl.className = 'speaker-name';
+        }
+  }
+
+  document.getElementById('dialog-text').innerHTML =
+    line.text.replace(/\n/g, '<br>');
+}
+function showAngel() {
+  document.getElementById('angel-screen').classList.remove('hidden');
+
+  document.getElementById('angel-text').innerHTML =
+    angelText.replace(/\n/g, '<br>');
+}
+
+function goKnowledgeCard() {
+
+  document.getElementById('angel-screen')
+    .classList.add('hidden');
+
+  document.getElementById('knowledge-screen')
+    .classList.remove('hidden');
+
+  renderKnowledgeCard();
+}
+
+function renderKnowledgeCard() {
+  const card = knowledgeCards[knowledgeIndex];
+  const cardBox = document.querySelector('.knowledge-card');
+
+  cardBox.style.animation = 'none';
+  cardBox.offsetHeight;
+  cardBox.style.animation = 'cardFadeIn 0.45s ease both';
+
+  document.querySelector('.knowledge-title').innerHTML = card.title;
+
+  document.getElementById('knowledge-content').innerHTML = card.content;
+}
+
+function nextKnowledgeCard() {
+
+  if (knowledgeIndex < knowledgeCards.length - 1) {
+
+    knowledgeIndex++;
+
+    renderKnowledgeCard();
+
+    if (knowledgeIndex === knowledgeCards.length - 1) {
+
+      document.querySelector('.knowledge-button')
+        .innerHTML = '進入下一章 →';
+    }
+
+  } else {
+
+    goNextChapter();
+
+  }
+}
+function goNextChapter() {
+  window.location.href = 'ending.html';
+}
+
+</script>
+
+</body>
+</html>
